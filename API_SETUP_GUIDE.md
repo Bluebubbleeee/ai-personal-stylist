@@ -112,15 +112,6 @@ python manage.py runserver
 
 ---
 
-## 💡 **Pro Tips for University Projects**
-
-1. **For Demo**: Use mock APIs (keep `xxxxxx` values)
-2. **For Real Testing**: Get free tier API keys
-3. **For Production**: Upgrade to paid APIs
-4. **Security**: Never commit real API keys to Git!
-
----
-
 ## 🔒 **Security Notes**
 
 - ✅ `.env` file is in `.gitignore` (safe)
@@ -135,6 +126,4 @@ python manage.py runserver
 **Common Issues:**
 - **Email not working?** Make sure you use Gmail App Password, not regular password
 - **Weather API failing?** Check if your OpenWeatherMap key is activated (takes 10 min)
-- **Mock mode?** Just leave `xxxxxx` values - the system will simulate responses
 
-**Everything works without real APIs for demonstration purposes!** 🎉
