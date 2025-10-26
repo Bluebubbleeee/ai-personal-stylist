@@ -72,7 +72,19 @@ A comprehensive Django-based web application that leverages artificial intellige
    ```
 
 4. **Environment Configuration**
+   
+   **Option A: Quick Setup (Recommended)**
+   ```bash
+   python setup_env.py
+   ```
+   
+   **Option B: Manual Setup**
    Create a `.env` file in the project root:
+   ```bash
+   cp env.example .env
+   ```
+   
+   Then edit `.env` with your API keys:
    ```env
    # OpenAI API Configuration
    OPENAI_API_KEY=your_openai_api_key_here
@@ -92,6 +104,8 @@ A comprehensive Django-based web application that leverages artificial intellige
    SECRET_KEY=your_secret_key_here
    DEBUG=True
    ```
+   
+   📚 **For detailed setup instructions, see [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md)**
 
 5. **Database Setup**
    ```bash

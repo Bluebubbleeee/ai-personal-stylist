@@ -21,8 +21,8 @@ class ComputerVisionService:
     """Service for computer vision API integration"""
     
     def __init__(self):
-        self.api_endpoint = getattr(settings, 'CV_API_ENDPOINT', 'xxxxxx')
-        self.api_key = getattr(settings, 'CV_API_KEY', 'xxxxxx')
+        self.api_endpoint = getattr(settings, 'CV_API_ENDPOINT', '')
+        self.api_key = getattr(settings, 'CV_API_KEY', '')
         self.timeout = 30  # seconds
         self.max_retries = 3
     
@@ -35,7 +35,7 @@ class ComputerVisionService:
         """
         try:
             # Check if we have actual API credentials
-            if self.api_endpoint == 'xxxxxx' or self.api_key == 'xxxxxx':
+            if not self.api_key or not self.api_endpoint or self.api_endpoint == 'xxxxxx' or self.api_key == 'xxxxxx':
                 logger.info("Using mock CV service - replace with real API credentials")
                 return self._mock_cv_analysis(clothing_item)
             

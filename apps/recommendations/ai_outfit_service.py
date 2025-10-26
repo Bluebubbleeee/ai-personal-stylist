@@ -10,6 +10,9 @@ from openai import OpenAI
 from django.conf import settings
 from apps.wardrobe.models import ClothingItem
 from apps.recommendations.models import OutfitSuggestion, RecommendationSession
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 logger = logging.getLogger(__name__)
 
@@ -17,8 +20,8 @@ class AIOutfitService:
     """Service for AI-powered outfit recommendations using OpenAI"""
     
     def __init__(self):
-        # Use the same OpenAI API key from environment
-        self.client = OpenAI(api_key="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")
+        # Use OpenAI API key from environment
+        self.client = OpenAI()  # Automatically picks up OPENAI_API_KEY from environment
         self.model = "gpt-4o"
     
     def generate_outfit_recommendations(self, user, session: RecommendationSession, weather_data: Dict = None, occasion: str = None, custom_prompt: str = None) -> List[OutfitSuggestion]:

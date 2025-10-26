@@ -10,6 +10,10 @@ from openai import OpenAI
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
+
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +36,7 @@ def encode_image_to_base64(image_file):
 def test_openai_api(request):
     """Test endpoint to debug OpenAI API"""
     try:
-        client = OpenAI(api_key="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")
+        client = OpenAI()  # Automatically picks up OPENAI_API_KEY from environment
         
         # Simple test without image
         response = client.chat.completions.create(
@@ -98,8 +102,7 @@ def analyze_image_openai_api(request):
         
         # Initialize OpenAI client (automatically picks up OPENAI_API_KEY from environment)
         try:
-            openai_api_key = "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"
-            client = OpenAI(api_key= openai_api_key)
+            client = OpenAI()  # Automatically picks up OPENAI_API_KEY from environment
         except Exception as e:
             logger.error(f"OpenAI client initialization error: {str(e)}")
             return JsonResponse({

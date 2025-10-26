@@ -10,18 +10,19 @@ from django.core.cache import cache
 from typing import Dict, Optional
 import json
 from datetime import datetime, timedelta
-
+from dotenv import load_dotenv
 from .models import WeatherCache
 
 logger = logging.getLogger(__name__)
 
+load_dotenv(override=True)
 
 class WeatherService:
     """Service for weather API integration"""
     
     def __init__(self):
         self.api_endpoint = getattr(settings, 'WEATHER_API_ENDPOINT', 'http://api.weatherapi.com/v1/current.json')
-        self.api_key = getattr(settings, 'WEATHER_API_KEY', '6d23c3132a2345aa816194449250210')
+        self.api_key = getattr(settings, 'WEATHER_API_KEY', '')
         self.timeout = 10  # seconds
         self.cache_duration = 3600  # 1 hour in seconds
     
@@ -42,7 +43,7 @@ class WeatherService:
                 return cached_data
             
             # Check if we have actual API credentials
-            if self.api_endpoint == 'xxxxxx' or self.api_key == 'xxxxxx':
+            if not self.api_key or self.api_key == 'xxxxxx' or self.api_endpoint == 'xxxxxx':
                 logger.info("Using mock weather service - replace with real API credentials")
                 return self._get_mock_weather(location)
             

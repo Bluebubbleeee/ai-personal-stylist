@@ -257,7 +257,7 @@ CV_API_KEY = config('CV_API_KEY', default='xxxxxx')
 
 # Weather API
 WEATHER_API_ENDPOINT = config('WEATHER_API_ENDPOINT', default='http://api.weatherapi.com/v1/current.json')
-WEATHER_API_KEY = config('WEATHER_API_KEY', default='6d23c3132a2345aa816194449250210')
+WEATHER_API_KEY = config('WEATHER_API_KEY', default='')
 
 # AI Recommendation API
 AI_RECOMMENDATION_API_ENDPOINT = config('AI_RECOMMENDATION_API_ENDPOINT', default='xxxxxx')

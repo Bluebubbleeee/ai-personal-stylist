@@ -18,8 +18,8 @@ class AIRecommendationService:
     """Service for AI recommendation API integration"""
     
     def __init__(self):
-        self.api_endpoint = getattr(settings, 'AI_RECOMMENDATION_API_ENDPOINT', 'xxxxxx')
-        self.api_key = getattr(settings, 'AI_RECOMMENDATION_API_KEY', 'xxxxxx')
+        self.api_endpoint = getattr(settings, 'AI_RECOMMENDATION_API_ENDPOINT', '')
+        self.api_key = getattr(settings, 'AI_RECOMMENDATION_API_KEY', '')
         self.timeout = 30  # seconds
         self.max_retries = 2
     
@@ -35,7 +35,7 @@ class AIRecommendationService:
         """
         try:
             # Check if we have actual API credentials
-            if self.api_endpoint == 'xxxxxx' or self.api_key == 'xxxxxx':
+            if not self.api_key or not self.api_endpoint or self.api_endpoint == 'xxxxxx' or self.api_key == 'xxxxxx':
                 logger.info("Using mock AI service - replace with real API credentials")
                 return self._generate_mock_recommendations(recommendation_request)
             
