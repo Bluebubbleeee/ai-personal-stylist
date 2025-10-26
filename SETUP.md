@@ -1,4 +1,4 @@
-# Setup Guide - AI-Powered Personal Stylist
+# 🚀 Setup Guide - AI-Powered Personal Stylist
 
 This guide will help you set up the AI-Powered Personal Stylist project on your local machine.
 
@@ -8,214 +8,234 @@ Before you begin, ensure you have the following installed:
 
 - **Python 3.13+** - [Download Python](https://www.python.org/downloads/)
 - **Git** - [Download Git](https://git-scm.com/downloads)
-- **Code Editor** - VS Code, PyCharm, or any preferred editor
+- **pip** - Usually comes with Python
 
-## 🔑 Required API Keys
+## 🔧 Installation Steps
 
-You'll need to obtain the following API keys:
+### 1. Clone the Repository
 
-### 1. OpenAI API Key
-1. Visit [OpenAI Platform](https://platform.openai.com/)
-2. Create an account or sign in
-3. Navigate to API Keys section
-4. Create a new API key
-5. Copy the key (you won't be able to see it again)
-
-### 2. WeatherAPI Key
-1. Visit [WeatherAPI](https://www.weatherapi.com/)
-2. Sign up for a free account
-3. Go to your dashboard
-4. Copy your API key
-
-### 3. Gmail App Password (for email functionality)
-1. Enable 2-Factor Authentication on your Gmail account
-2. Go to Google Account settings
-3. Navigate to Security > App passwords
-4. Generate a new app password for "Mail"
-5. Use this password in your .env file
-
-## 🚀 Installation Steps
-
-### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/yourusername/ai-personal-stylist.git
 cd ai-personal-stylist
 ```
 
-### Step 2: Create Virtual Environment
+### 2. Create Virtual Environment
+
 ```bash
-# On Windows
+# Create virtual environment
 python -m venv venv
+
+# Activate virtual environment
+# On Windows:
 venv\Scripts\activate
 
-# On macOS/Linux
-python3 -m venv venv
+# On macOS/Linux:
 source venv/bin/activate
 ```
 
-### Step 3: Install Dependencies
+### 3. Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4: Environment Configuration
-1. Copy the example environment file:
-   ```bash
-   copy .env.example .env  # Windows
-   cp .env.example .env    # macOS/Linux
-   ```
+### 4. Environment Configuration
 
-2. Edit the `.env` file with your actual values:
-   ```env
-   # Django Configuration
-   DEBUG=True
-   SECRET_KEY=your-secret-key-here
-   
-   # OpenAI Configuration
-   OPENAI_API_KEY=your_openai_api_key_here
-   
-   # Weather API Configuration
-   WEATHER_API_ENDPOINT=http://api.weatherapi.com/v1/current.json
-   WEATHER_API_KEY=your_weather_api_key_here
-   
-   # Email Configuration
-   EMAIL_HOST=smtp.gmail.com
-   EMAIL_PORT=587
-   EMAIL_USE_TLS=True
-   EMAIL_HOST_USER=your_email@gmail.com
-   EMAIL_HOST_PASSWORD=your_gmail_app_password
-   ```
+Create a `.env` file in the project root directory:
 
-### Step 5: Database Setup
+```env
+# Django Configuration
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+
+# OpenAI API Configuration
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Weather API Configuration
+WEATHER_API_ENDPOINT=http://api.weatherapi.com/v1/current.json
+WEATHER_API_KEY=your_weather_api_key_here
+
+# Email Configuration
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your_email@gmail.com
+EMAIL_HOST_PASSWORD=your_app_password
+```
+
+### 5. Database Setup
+
 ```bash
+# Create database migrations
+python manage.py makemigrations
+
+# Apply migrations
 python manage.py migrate
+
+# Create superuser account
 python manage.py createsuperuser
 ```
 
-### Step 6: Run the Server
+### 6. Collect Static Files
+
+```bash
+python manage.py collectstatic
+```
+
+### 7. Run the Development Server
+
 ```bash
 python manage.py runserver
 ```
 
-### Step 7: Access the Application
-Open your browser and navigate to: `http://127.0.0.1:8000`
+### 8. Access the Application
 
-## 🧪 Testing the Setup
+Open your browser and navigate to:
+- **Main Application**: http://127.0.0.1:8000
+- **Admin Panel**: http://127.0.0.1:8000/admin
 
-### 1. Create an Account
-- Click "Sign Up" on the homepage
-- Fill in your details and verify your email
+## 🔑 API Keys Setup
 
-### 2. Upload a Clothing Item
-- Go to Wardrobe > Upload Item
-- Upload an image of a dress or clothing item
-- Verify that AI analysis populates the form
+### OpenAI API Key
 
-### 3. Get AI Recommendations
-- Go to Style Me page
-- Allow location access for weather data
-- Request outfit recommendations
+1. Visit [OpenAI Platform](https://platform.openai.com/)
+2. Sign up or log in to your account
+3. Navigate to API Keys section
+4. Create a new API key
+5. Copy the key and add it to your `.env` file
 
-### 4. Test All Features
-- Browse your wardrobe
-- Mark items as favorites
-- Edit item details
-- Check dashboard statistics
+### Weather API Key
 
-## 🔧 Troubleshooting
+1. Visit [WeatherAPI](https://www.weatherapi.com/)
+2. Sign up for a free account
+3. Get your API key from the dashboard
+4. Add the key to your `.env` file
 
-### Common Issues
+### Email Configuration (Gmail)
 
-#### 1. "ModuleNotFoundError" when running commands
-**Solution**: Ensure your virtual environment is activated
+1. Enable 2-Factor Authentication on your Gmail account
+2. Generate an App Password:
+   - Go to Google Account settings
+   - Security → 2-Step Verification → App passwords
+   - Generate password for "Mail"
+3. Use this password in your `.env` file
+
+## 🗄️ Database Configuration
+
+### SQLite (Default - Development)
+
+The project uses SQLite by default, which requires no additional setup.
+
+### PostgreSQL (Production)
+
+For production deployment, configure PostgreSQL:
+
+1. Install PostgreSQL
+2. Create a database
+3. Update `settings.py`:
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'your_database_name',
+        'USER': 'your_username',
+        'PASSWORD': 'your_password',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+```
+
+## 🧪 Testing
+
+Run the test suite:
+
 ```bash
-# Check if venv is activated (you should see (venv) in your terminal)
-# If not, activate it:
-venv\Scripts\activate  # Windows
-source venv/bin/activate  # macOS/Linux
-```
-
-#### 2. "API key not found" errors
-**Solution**: Check your `.env` file
-- Ensure the file is named exactly `.env` (not `.env.txt`)
-- Verify all API keys are correctly entered
-- Restart the Django server after making changes
-
-#### 3. Email not sending
-**Solution**: Check email configuration
-- Ensure you're using an App Password, not your regular Gmail password
-- Verify 2FA is enabled on your Gmail account
-- Check that EMAIL_HOST_USER is your full Gmail address
-
-#### 4. Weather data not loading
-**Solution**: Check WeatherAPI configuration
-- Verify your API key is correct
-- Ensure you have API calls remaining in your quota
-- Check browser console for JavaScript errors
-
-#### 5. Images not displaying
-**Solution**: Check media file configuration
-- Ensure the `media/` directory exists
-- Check file permissions
-- Verify MEDIA_URL and MEDIA_ROOT settings
-
-### Debug Mode
-If you encounter issues, you can enable debug mode by setting `DEBUG=True` in your `.env` file. This will show detailed error messages.
-
-## 📁 Project Structure
-
-```
-ai-personal-stylist/
-├── apps/                    # Django applications
-│   ├── authentication/     # User management
-│   ├── common/            # Static pages
-│   ├── recommendations/   # AI recommendations
-│   └── wardrobe/          # Wardrobe management
-├── templates/             # HTML templates
-├── static/               # CSS, JS, images
-├── media/                # User uploaded files
-├── stylist_project/      # Django settings
-├── requirements.txt      # Python dependencies
-├── .env.example         # Environment template
-├── .gitignore          # Git ignore rules
-├── LICENSE             # MIT License
-├── README.md           # Project documentation
-└── SETUP.md           # This file
+python manage.py test
 ```
 
 ## 🚀 Deployment
 
-### For Production Deployment
+### Production Checklist
 
-1. **Set Production Environment Variables**:
-   ```env
-   DEBUG=False
-   SECRET_KEY=your-production-secret-key
-   ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
-   ```
+1. **Environment Variables**
+   - Set `DEBUG=False`
+   - Use production database
+   - Set secure `SECRET_KEY`
+   - Configure production email settings
 
-2. **Use Production Database**:
-   - PostgreSQL recommended for production
-   - Update DATABASE_URL in .env
-
-3. **Static Files**:
+2. **Static Files**
    ```bash
-   python manage.py collectstatic
+   python manage.py collectstatic --noinput
    ```
 
-4. **Security Settings**:
-   - Set secure cookies
-   - Use HTTPS
-   - Configure proper CORS settings
+3. **Database**
+   ```bash
+   python manage.py migrate
+   ```
 
-## 📞 Support
+4. **Web Server**
+   - Configure Nginx/Apache
+   - Set up SSL certificates
+   - Configure domain
 
-If you encounter any issues during setup:
+## 🐛 Troubleshooting
 
-1. Check this troubleshooting guide
-2. Review the [GitHub Issues](https://github.com/yourusername/ai-personal-stylist/issues)
+### Common Issues
+
+**1. ModuleNotFoundError**
+```bash
+# Ensure virtual environment is activated
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
+```
+
+**2. Database Issues**
+```bash
+# Delete database and recreate
+rm db.sqlite3
+python manage.py migrate
+```
+
+**3. Static Files Not Loading**
+```bash
+# Collect static files
+python manage.py collectstatic
+```
+
+**4. API Key Issues**
+- Verify API keys are correctly set in `.env`
+- Check API key permissions and quotas
+- Ensure `.env` file is in the project root
+
+**5. Email Not Sending**
+- Verify email credentials in `.env`
+- Check Gmail App Password is correct
+- Ensure 2FA is enabled on Gmail account
+
+### Getting Help
+
+If you encounter issues:
+
+1. Check the [Issues](https://github.com/yourusername/ai-personal-stylist/issues) page
+2. Create a new issue with detailed error information
 3. Contact support: aistylist@support.com
 
-## 🎉 You're All Set!
+## 📚 Additional Resources
 
-Once you've completed these steps, you should have a fully functional AI-Powered Personal Stylist running on your local machine. Enjoy exploring the features and building your digital wardrobe!
+- [Django Documentation](https://docs.djangoproject.com/)
+- [OpenAI API Documentation](https://platform.openai.com/docs)
+- [WeatherAPI Documentation](https://www.weatherapi.com/docs/)
+- [Bootstrap Documentation](https://getbootstrap.com/docs/)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+---
+
+**Happy coding! 🎉**
