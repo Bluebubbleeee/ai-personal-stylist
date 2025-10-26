@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - AI Stylist{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold text-primary mb-3">
+                    <i class="bi bi-stars me-3"></i>About AI Stylist
+                </h1>
+                <p class="lead text-muted">Your intelligent fashion companion powered by cutting-edge AI technology</p>
+            </div>
+
+            <!-- Mission Section -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-4">
+                        <i class="bi bi-bullseye me-2"></i>Our Mission
+                    </h2>
+                    <p class="fs-5 text-muted mb-4">
+                        At AI Stylist, we believe that everyone deserves to look and feel their best. Our mission is to democratize fashion by making personalized style recommendations accessible to everyone, regardless of their fashion expertise or budget.
+                    </p>
+                    <p class="text-muted">
+                        We combine the power of artificial intelligence with deep understanding of fashion trends, personal preferences, and practical considerations like weather and occasion to help you build a wardrobe that truly reflects your unique style.
+                    </p>
+                </div>
+            </div>
+
+            <!-- What We Do Section -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-4">
+                        <i class="bi bi-gear me-2"></i>What We Do
+                    </h2>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-primary bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-robot fs-5"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-semibold mb-2">AI-Powered Recommendations</h5>
+                                    <p class="text-muted mb-0">Our advanced AI analyzes your wardrobe, preferences, and current trends to suggest perfect outfit combinations.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-success bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-collection fs-5"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-semibold mb-2">Smart Wardrobe Management</h5>
+                                    <p class="text-muted mb-0">Organize and categorize your clothing items with intelligent tagging and visual recognition technology.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-info bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-cloud-sun fs-5"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-semibold mb-2">Weather-Aware Suggestions</h5>
+                                    <p class="text-muted mb-0">Get outfit recommendations that consider current weather conditions and seasonal appropriateness.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-warning bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-person-check fs-5"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="fw-semibold mb-2">Personalized Experience</h5>
+                                    <p class="text-muted mb-0">Learn your style preferences and adapt recommendations to match your unique fashion sense.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technology Section -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-4">
+                        <i class="bi bi-cpu me-2"></i>Our Technology
+                    </h2>
+                    <p class="text-muted mb-4">
+                        AI Stylist is built on cutting-edge artificial intelligence and machine learning technologies. We use advanced computer vision to analyze clothing items, natural language processing to understand style preferences, and sophisticated algorithms to generate personalized recommendations.
+                    </p>
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3">
+                                <i class="bi bi-eye display-4 text-primary mb-3"></i>
+                                <h6 class="fw-semibold">Computer Vision</h6>
+                                <small class="text-muted">Advanced image recognition for clothing analysis</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3">
+                                <i class="bi bi-brain display-4 text-success mb-3"></i>
+                                <h6 class="fw-semibold">Machine Learning</h6>
+                                <small class="text-muted">AI that learns your style preferences</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="p-3">
+                                <i class="bi bi-graph-up display-4 text-info mb-3"></i>
+                                <h6 class="fw-semibold">Data Analytics</h6>
+                                <small class="text-muted">Insights into your wardrobe and style patterns</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-4">
+                        <i class="bi bi-people me-2"></i>Our Team
+                    </h2>
+                    <p class="text-muted mb-4">
+                        We're a passionate team of fashion enthusiasts, AI researchers, and software engineers who believe in the power of technology to transform how people think about style and fashion.
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-semibold text-primary">Fashion Experts</h6>
+                            <p class="text-muted small">Stylists and trend analysts who ensure our recommendations are always on-point and fashion-forward.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-semibold text-primary">AI Engineers</h6>
+                            <p class="text-muted small">Machine learning specialists who develop the algorithms that power our intelligent recommendations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="text-center">
+                <div class="card border-0 shadow-sm bg-primary bg-gradient text-white">
+                    <div class="card-body p-5">
+                        <h3 class="fw-bold mb-3">Ready to Transform Your Style?</h3>
+                        <p class="mb-4">Join thousands of users who have discovered their perfect style with AI Stylist.</p>
+                        <a href="{% url 'style_me' %}" class="btn btn-light btn-lg me-3">
+                            <i class="bi bi-magic me-2"></i>Get Started
+                        </a>
+                        <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-envelope me-2"></i>Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

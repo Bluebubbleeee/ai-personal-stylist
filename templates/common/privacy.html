@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Privacy Policy - AI Stylist{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold text-primary mb-3">
+                    <i class="bi bi-shield-check me-3"></i>Privacy Policy
+                </h1>
+                <p class="lead text-muted">Last updated: {% now "F j, Y" %}</p>
+            </div>
+
+            <!-- Introduction -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Introduction</h2>
+                    <p class="text-muted">
+                        At AI Stylist, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-powered personal stylist and wardrobe management service.
+                    </p>
+                    <p class="text-muted">
+                        By using our service, you agree to the collection and use of information in accordance with this policy. If you do not agree with our policies and practices, please do not use our service.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Information We Collect -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Information We Collect</h2>
+                    
+                    <h4 class="h5 fw-semibold text-dark mb-3">Personal Information</h4>
+                    <ul class="text-muted mb-4">
+                        <li><strong>Account Information:</strong> Name, email address, password, and profile preferences</li>
+                        <li><strong>Style Preferences:</strong> Favorite colors, styles, occasions, size preferences, and comfort levels</li>
+                        <li><strong>Location Data:</strong> Geographic location for weather-based recommendations (with your consent)</li>
+                        <li><strong>Contact Information:</strong> Email address for account notifications and support</li>
+                    </ul>
+
+                    <h4 class="h5 fw-semibold text-dark mb-3">Wardrobe Information</h4>
+                    <ul class="text-muted mb-4">
+                        <li><strong>Clothing Images:</strong> Photos of your clothing items for AI analysis</li>
+                        <li><strong>Item Details:</strong> Brand, color, category, season, and other clothing attributes</li>
+                        <li><strong>AI Descriptions:</strong> Computer-generated descriptions of your clothing items</li>
+                        <li><strong>Usage Data:</strong> How often you wear items and which recommendations you follow</li>
+                    </ul>
+
+                    <h4 class="h5 fw-semibold text-dark mb-3">Technical Information</h4>
+                    <ul class="text-muted">
+                        <li><strong>Device Information:</strong> Device type, operating system, and browser information</li>
+                        <li><strong>Usage Analytics:</strong> How you interact with our service and features</li>
+                        <li><strong>Log Data:</strong> IP address, access times, and pages visited</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- How We Use Information -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">How We Use Your Information</h2>
+                    <ul class="text-muted">
+                        <li><strong>Provide Services:</strong> Generate personalized outfit recommendations and manage your wardrobe</li>
+                        <li><strong>Improve AI:</strong> Train and improve our AI algorithms for better recommendations</li>
+                        <li><strong>Personalization:</strong> Customize your experience based on your preferences and behavior</li>
+                        <li><strong>Communication:</strong> Send you important updates, notifications, and support messages</li>
+                        <li><strong>Analytics:</strong> Understand how our service is used to improve functionality</li>
+                        <li><strong>Security:</strong> Protect against fraud, abuse, and security threats</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Information Sharing -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Information Sharing and Disclosure</h2>
+                    <p class="text-muted mb-3">We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:</p>
+                    <ul class="text-muted">
+                        <li><strong>Service Providers:</strong> With trusted third-party vendors who help us operate our service (under strict confidentiality agreements)</li>
+                        <li><strong>Legal Requirements:</strong> When required by law or to protect our rights and safety</li>
+                        <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets (with notice)</li>
+                        <li><strong>Consent:</strong> When you explicitly consent to sharing your information</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Data Security -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Data Security</h2>
+                    <p class="text-muted mb-3">We implement appropriate technical and organizational measures to protect your personal information:</p>
+                    <ul class="text-muted">
+                        <li><strong>Encryption:</strong> All data is encrypted in transit and at rest</li>
+                        <li><strong>Access Controls:</strong> Strict access controls and authentication measures</li>
+                        <li><strong>Regular Audits:</strong> Regular security assessments and updates</li>
+                        <li><strong>Secure Infrastructure:</strong> Hosted on secure, industry-standard cloud platforms</li>
+                        <li><strong>Staff Training:</strong> All team members are trained on data protection best practices</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Your Rights -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Your Rights and Choices</h2>
+                    <p class="text-muted mb-3">You have the following rights regarding your personal information:</p>
+                    <ul class="text-muted">
+                        <li><strong>Access:</strong> Request a copy of your personal information</li>
+                        <li><strong>Correction:</strong> Update or correct inaccurate information</li>
+                        <li><strong>Deletion:</strong> Request deletion of your personal information</li>
+                        <li><strong>Portability:</strong> Export your data in a machine-readable format</li>
+                        <li><strong>Opt-out:</strong> Unsubscribe from marketing communications</li>
+                        <li><strong>Restriction:</strong> Limit how we process your information</li>
+                    </ul>
+                    <p class="text-muted mt-3">
+                        To exercise these rights, please contact us at <a href="mailto:privacy@aistylist.com">privacy@aistylist.com</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Cookies and Tracking -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Cookies and Tracking Technologies</h2>
+                    <p class="text-muted mb-3">We use cookies and similar technologies to:</p>
+                    <ul class="text-muted">
+                        <li>Remember your preferences and settings</li>
+                        <li>Analyze how you use our service</li>
+                        <li>Provide personalized content and recommendations</li>
+                        <li>Improve our service functionality</li>
+                    </ul>
+                    <p class="text-muted">
+                        You can control cookie settings through your browser preferences. Note that disabling cookies may affect some functionality of our service.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Data Retention -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Data Retention</h2>
+                    <p class="text-muted">
+                        We retain your personal information only as long as necessary to provide our services and fulfill the purposes outlined in this Privacy Policy. When you delete your account, we will delete your personal information within 30 days, except where we are required to retain it for legal or regulatory purposes.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Children's Privacy -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Children's Privacy</h2>
+                    <p class="text-muted">
+                        Our service is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Changes to Policy -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Changes to This Privacy Policy</h2>
+                    <p class="text-muted">
+                        We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date. We encourage you to review this Privacy Policy periodically for any changes.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <h2 class="h3 fw-bold text-primary mb-3">Contact Us</h2>
+                    <p class="text-muted mb-3">If you have any questions about this Privacy Policy or our data practices, please contact us:</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="text-muted">
+                                <strong>Email:</strong> <a href="mailto:privacy@aistylist.com">privacy@aistylist.com</a><br>
+                                <strong>General Support:</strong> <a href="mailto:aistylist@support.com">aistylist@support.com</a>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-muted">
+                                <strong>Address:</strong><br>
+                                123 Fashion Avenue, Suite 456<br>
+                                New York, NY 10001<br>
+                                United States
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

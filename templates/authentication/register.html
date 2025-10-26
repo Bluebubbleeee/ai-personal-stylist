@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign Up - AI Stylist{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center min-vh-100 align-items-center py-5">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <div class="auth-icon bg-primary bg-gradient text-white rounded-circle mx-auto mb-3" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-person-plus fs-4"></i>
+                        </div>
+                        <h2 class="fw-bold text-dark">Create Your Account</h2>
+                        <p class="text-muted">Join AI Stylist and transform your wardrobe</p>
+                    </div>
+                    
+                    <!-- Registration Form -->
+                    <form method="post" id="registerForm" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Name Field -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-semibold">
+                                <i class="bi bi-person me-1"></i>Full Name
+                            </label>
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="name" 
+                                   name="name" 
+                                   placeholder="Enter your full name"
+                                   required>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        
+                        <!-- Email Field -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="bi bi-envelope me-1"></i>Email Address
+                            </label>
+                            <input type="email" 
+                                   class="form-control form-control-lg" 
+                                   id="email" 
+                                   name="email" 
+                                   placeholder="Enter your email address"
+                                   required>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        
+                        <!-- Password Field -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold">
+                                <i class="bi bi-lock me-1"></i>Password
+                            </label>
+                            <div class="position-relative">
+                                <input type="password" 
+                                       class="form-control form-control-lg" 
+                                       id="password" 
+                                       name="password" 
+                                       placeholder="Create a strong password"
+                                       required>
+                                <button type="button" 
+                                        class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-muted"
+                                        id="togglePassword"
+                                        style="border: none; background: none;">
+                                    <i class="bi bi-eye" id="toggleIcon"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback"></div>
+                            <small class="form-text text-muted">
+                                Password must be at least 8 characters long and include letters and numbers.
+                            </small>
+                        </div>
+                        
+                        <!-- Confirm Password Field -->
+                        <div class="mb-4">
+                            <label for="confirm_password" class="form-label fw-semibold">
+                                <i class="bi bi-lock-fill me-1"></i>Confirm Password
+                            </label>
+                            <input type="password" 
+                                   class="form-control form-control-lg" 
+                                   id="confirm_password" 
+                                   name="confirm_password" 
+                                   placeholder="Confirm your password"
+                                   required>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        
+                        <!-- Terms and Privacy -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="terms" required>
+                                <label class="form-check-label text-muted" for="terms">
+                                    I agree to the <a href="#" class="text-primary text-decoration-none">Terms of Service</a> 
+                                    and <a href="#" class="text-primary text-decoration-none">Privacy Policy</a>
+                                </label>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-3" id="submitBtn">
+                            <span class="btn-text">
+                                <i class="bi bi-person-plus me-2"></i>Create Account
+                            </span>
+                            <span class="btn-spinner d-none">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                Creating Account...
+                            </span>
+                        </button>
+                        
+                        <!-- Login Link -->
+                        <div class="text-center">
+                            <p class="text-muted mb-0">
+                                Already have an account? 
+                                <a href="{% url 'login' %}" class="text-primary text-decoration-none fw-semibold">Sign In</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.auth-page {
+    background: linear-gradient(135deg, #f8f9ff 0%, #e9ecff 100%);
+}
+
+.auth-icon {
+    transition: all 0.3s ease;
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.form-control:focus {
+    border-color: #6f42c1;
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6f42c1 0%, #007bff 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+}
+
+.password-strength {
+    height: 3px;
+    background: #e9ecef;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-weak { background: #dc3545; width: 33%; }
+.strength-medium { background: #ffc107; width: 66%; }
+.strength-strong { background: #28a745; width: 100%; }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnSpinner = submitBtn.querySelector('.btn-spinner');
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const confirmPasswordField = document.getElementById('confirm_password');
+    
+    // Toggle password visibility
+    togglePassword.addEventListener('click', function() {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        
+        if (type === 'text') {
+            toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+        } else {
+            toggleIcon.classList.replace('bi-eye-slash', 'bi-eye');
+        }
+    });
+    
+    // Password confirmation validation
+    confirmPasswordField.addEventListener('input', function() {
+        if (this.value !== passwordField.value) {
+            this.setCustomValidity('Passwords do not match');
+            this.classList.add('is-invalid');
+        } else {
+            this.setCustomValidity('');
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        }
+    });
+    
+    // Password validation
+    passwordField.addEventListener('input', function() {
+        const password = this.value;
+        const isValid = password.length >= 8 && /[A-Za-z]/.test(password) && /[0-9]/.test(password);
+        
+        if (password.length === 0) {
+            this.classList.remove('is-invalid', 'is-valid');
+        } else if (isValid) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        } else {
+            this.classList.remove('is-valid');
+            this.classList.add('is-invalid');
+        }
+        
+        // Revalidate confirm password when password changes
+        if (confirmPasswordField.value) {
+            confirmPasswordField.dispatchEvent(new Event('input'));
+        }
+    });
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Reset all validation states
+        const inputs = form.querySelectorAll('.form-control, .form-check-input');
+        inputs.forEach(input => {
+            input.classList.remove('is-invalid', 'is-valid');
+        });
+        
+        let isValid = true;
+        
+        // Validate required fields
+        inputs.forEach(input => {
+            if (input.hasAttribute('required') && !input.value.trim()) {
+                input.classList.add('is-invalid');
+                isValid = false;
+            } else if (input.value.trim()) {
+                input.classList.add('is-valid');
+            }
+        });
+        
+        // Validate email format
+        const email = document.getElementById('email');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email.value && !emailRegex.test(email.value)) {
+            email.classList.add('is-invalid');
+            isValid = false;
+        }
+        
+        // Validate password strength
+        const password = passwordField.value;
+        const passwordValid = password.length >= 8 && /[A-Za-z]/.test(password) && /[0-9]/.test(password);
+        if (!passwordValid) {
+            passwordField.classList.add('is-invalid');
+            isValid = false;
+        }
+        
+        // Validate password confirmation
+        if (confirmPasswordField.value !== passwordField.value) {
+            confirmPasswordField.classList.add('is-invalid');
+            isValid = false;
+        }
+        
+        if (isValid) {
+            // Show loading state
+            btnText.classList.add('d-none');
+            btnSpinner.classList.remove('d-none');
+            submitBtn.disabled = true;
+            
+            // Submit form
+            this.submit();
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,1922 @@
+=== PAGE 1 ===
+ 
+ 
+ 
+NIT 3003: IT CAPSTONE PROJECT 1 
+ 
+ 
+ 
+                         PROJECT PROPOSAL: COMPLETE 
+AI-Powered Personal Stylist & Wardrobe Manager 
+ 
+ 
+                                        PREPARED BY: 
+TASNIM CHOWDHURY(S8073439) 
+                            MASUD RANA(S8113317) 
+                    RISHEETHA BOMMANCHI(S8087835) 
+                        MUSKAN MUSKAN(S4680497) 
+ 
+ 
+ 
+
+
+=== PAGE 2 ===
+Table of Contents 
+Executive Summary ........................................................................................................................ 5 
+Introduction ..................................................................................................................................... 5 
+Background and Context............................................................................................................. 5 
+Problem Statement ...................................................................................................................... 6 
+Goals and Non-Goals .................................................................................................................. 6 
+Project Aims and Objectives ....................................................................................................... 6 
+Scope ........................................................................................................................................... 6 
+Market Analysis .............................................................................................................................. 7 
+Market Trends & Opportunities .................................................................................................. 7 
+Competitor Landscape ................................................................................................................ 7 
+Summary ..................................................................................................................................... 8 
+System Requirements...................................................................................................................... 9 
+Functional Requirements ............................................................................................................ 9 
+Non-Functional Requirements (NFRs) ..................................................................................... 11 
+Use Case Specifications ................................................................................................................ 11 
+UC-01: Upload & Auto-Tag ..................................................................................................... 11 
+UC-02: “Style Me” Recommendations ..................................................................................... 12 
+UC-03: Registration and Activation ......................................................................................... 13 
+UC-04: Daily Outfit Planner ..................................................................................................... 14 
+UC-05: Feedback & Personalization ........................................................................................ 15 
+UC-06: Search and Filter Wardrobe ......................................................................................... 16 
+UC-07: Edit/Delete Wardrobe Item .......................................................................................... 17 
+UC-08: Manage Tags ................................................................................................................ 17 
+UC-09: Password Reset ............................................................................................................ 18 
+UC-10: Account Settings .......................................................................................................... 19 
+Use Case Diagram..................................................................................................................... 20 
+Sequence Diagrams ................................................................................................................... 21 
+
+
+=== PAGE 3 ===
+System Architecture & Design ..................................................................................................... 24 
+High-Level Architecture ........................................................................................................... 24 
+Components .............................................................................................................................. 24 
+Pseudocode for Main Processes ................................................................................................ 24 
+UI Design Principles ................................................................................................................. 25 
+Wireframes ................................................................................................................................ 26 
+Data & API Specifications ............................................................................................................ 30 
+Data Dictionary ......................................................................................................................... 30 
+Entity-Relationship Diagram .................................................................................................... 31 
+Data Model Sketch (Illustrative) ............................................................................................... 33 
+REST API Specification ........................................................................................................... 33 
+Sample REST API Endpoints ................................................................................................... 34 
+Security & Compliance ................................................................................................................. 34 
+Security Architecture and Threat Model ................................................................................... 34 
+Data Protection Impact Assessment (DPIA) Summary ............................................................ 34 
+Data Retention and Disposal Policy ......................................................................................... 34 
+Ethical, Legal, and Privacy Considerations .............................................................................. 35 
+Accessibility Conformance ....................................................................................................... 35 
+Resource Management .................................................................................................................. 36 
+Human Resources ..................................................................................................................... 36 
+Technology Resources .............................................................................................................. 36 
+Time Resources ......................................................................................................................... 36 
+Resource Plan............................................................................................................................ 36 
+Timeline (Gantt)........................................................................................................................ 37 
+Testing & Quality Assurance ........................................................................................................ 37 
+Testing and Evaluation ............................................................................................................. 37 
+Acceptance Criteria ................................................................................................................... 37 
+Requirements Traceability Matrix (RTM) ................................................................................ 39 
+
+
+=== PAGE 4 ===
+Test Case Catalog ..................................................................................................................... 40 
+Error Catalogue ......................................................................................................................... 40 
+Operational Considerations ........................................................................................................... 41 
+Logging and Monitoring ........................................................................................................... 41 
+Email Templates ....................................................................................................................... 41 
+Maintenance and Operations..................................................................................................... 41 
+Future Enhancements ................................................................................................................ 41 
+Risk Management ......................................................................................................................... 42 
+Conclusion .................................................................................................................................... 43 
+References ..................................................................................................................................... 43 
+Glossary ........................................................................................................................................ 43 
+Student contribution……………………………………………………………………………… 
+ 
+ 
+
+
+=== PAGE 5 ===
+ 
+Executive Summary 
+The fashion-technology sector is experiencing rapid transformation, fueled by advancements in 
+hyper-personalization and intelligent automation. Modern consumers increasingly expect digital 
+solutions that go beyond generic fashion advice, instead demanding contextual recommendations 
+that adapt to their unique wardrobes, style preferences, and local conditions such as weather and 
+events. 
+This report introduces a comprehensive, web-based platform designed as an AI-powered personal 
+stylist and wardrobe manager. The system brings together three core capabilities: wardrobe 
+digitization and management, intelligent outfit recommendations, and context-aware styling 
+suggestions. In doing so, it emphasizes not only usability and seamless user experience, but also 
+privacy, security, and system performance—factors that are critical for building trust and ensuring 
+long-term adoption. 
+To support the proposed solution, the report provides a complete suite of systems analysis and 
+design artifacts. These include a review of the market context, definition of scope, detailed 
+functional and non-functional requirements, in-depth use cases, sequence diagrams, risk 
+management strategies, resource planning, pseudocode for key features, and a proposed 
+implementation timeline. 
+In alignment with academic and professional standards, the report also integrates in-text citations 
+and follows APA referencing conventions. It incorporates user-centric onboarding through an 
+email activation process, ensuring secure account creation and engagement from the outset. Rather 
+than offering fragmented conclusions at the end of each section, the report presents a consolidated 
+conclusion that synthesizes findings and recommendations. 
+Introduction 
+The web application enables users to upload clothing items, manage a digital wardrobe, and receive 
+personalized outfit recommendations based on weather and natural-language prompts. The user 
+interacts through a responsive web interface designed for accessibility and ease of use. A backend 
+API integrates computer vision for tagging and a recommendation service that balances rule-based 
+logic with data-driven personalization. 
+Background and Context 
+Digital wardrobe systems and AI stylists have gained traction as consumers look to reduce decision 
+fatigue and improve wardrobe utilization. Studies indicate growing expectations for AI-driven, 
+personalized guidance in everyday tasks, including outfit planning and event-appropriate attire.1 
+ 
+1 Statista (2024); Deloitte (2023); McKinsey & Company (2024). 
+
+
+=== PAGE 6 ===
+Problem Statement 
+Existing solutions either rely on manual effort or lack contextual awareness (e.g., local weather, 
+events). Users struggle to maintain a record of their wardrobe, find compatible outfit combinations, 
+and plan looks for specific occasions. There is an opportunity for an integrated web-based 
+experience that combines wardrobe organization, context-aware recommendations, and usability 
+best practices. 
+Goals and Non-Goals 
+Goals include: a secure web application with email-verified registration; wardrobe upload and AI 
+tagging; weather-aware recommendations; daily planner; and personalization. 
+Non-goals include: a native mobile app, social network features, AR try-on, and e-commerce 
+integration in the initial delivery. 
+ 
+Project Aims and Objectives 
+Aim 
+Deliver a secure, accessible, and performant web application that functions as a personal stylist 
+and digital wardrobe manager. 
+Objectives 
+• Implement a web-based authentication flow with email activation prior to first login. 
+• Provide image upload with automated computer vision tagging and manual tag editing. 
+• Offer “Style Me” recommendations informed by weather and prompt semantics. 
+• Include a daily planner and feedback-driven personalization loop. 
+• Enforce strong security (TLS 1.3, Argon2id), performance baselines, and accessibility 
+(WCAG 2.1 AA). 
+Scope 
+In Scope 
+Web app (frontend), backend API, image/object storage, computer vision tagging, 
+recommendation engine, weather integration, planner, feedback, security controls, accessibility, 
+documentation, and evaluation. 
+Out of Scope 
+Native mobile app, e-commerce integrations, AR try-on, social/community, monetization features. 
+ 
+ 
+
+
+=== PAGE 7 ===
+Market Analysis 
+Market Trends & Opportunities 
+AI-Driven Personalization 
+The AI-driven fashion sector is experiencing robust growth. One source projects the global AI in 
+fashion market to reach USD 4.4 billion by 2027, with adoption rates accelerating across retail 
+and apparel brands WifiTalents+2WifiTalents+2. Another analysis estimates the broader AI in 
+fashion market expanding from USD 1.5 billion in 2022 to USD 10 billion by 2030, reflecting 
+substantial investment in personalization technologies Gitnux+1. 
+Hyper-Personal Identity 
+Consumer receptivity to AI-powered experiences is strong: 61–65% of consumers are more likely 
+to 
+purchase 
+from 
+brands 
+offering 
+AI-enhanced 
+personalization 
+WifiTalentsGitnux. 
+Implementation by fashion brands is likewise widespread: for instance, 45% integrate AI for 
+personalized shopping, 55% utilize AI-powered visual search, and AI virtual fitting rooms drive 
+conversion increases of up to 30% and reductions in return rates by a similar margin 
+WifiTalents+2WifiTalents+2. 
+Sustainability & Wardrobe Utility 
+AI’s impact extends beyond consumer-facing features—it optimizes supply chain and operational 
+performance. AI-based demand forecasting improves inventory management by ~40%, and 
+AI-driven image tagging accelerates efficiency by 50–70% GitnuxWifiTalents+2WifiTalents+2. 
+Additionally, 75% of fashion companies using AI report increased customer satisfaction, and 80% 
+view AI as a future industry imperative WifiTalents+1. 
+ 
+Competitor Landscape 
+We’ve mapped existing players and gaps—here’s where the opportunity lies: 
+Existing 
+Solutions 
+Strengths 
+Limitations / Gaps 
+Alta, Whering, 
+Daydream 
+Wardrobe digitization, personalized 
+styling, sustainability focus (Vogue 
+Business) 
+Predominantly mobile-first; 
+limited integration of context-
+aware features or web UX 
+Stitch Fix, THE 
+YES 
+Scalable AI personalization, strong 
+retail integration (Wikipedia, Vogue 
+Business, Business Insider) 
+Focus concentrated on e-
+commerce; insufficient emphasis 
+on personal wardrobe 
+management 
+Stylumia 
+AI for trend forecasting and 
+production optimization (Vogue 
+Business, arXiv) 
+Enterprise-oriented; does not 
+address user-level 
+recommendations, wardrobe 
+digitization 
+
+
+=== PAGE 8 ===
+Emerging 
+players (Doji, 
+Refiberd, 
+Lalaland) 
+Virtual try-on, material recycling AI, 
+synthetic models; innovation oriented 
+(Business Insider, Vogue Business, 
+Wikipedia) 
+Specialized use cases; not unified 
+solutions for personal styling, 
+context awareness, and privacy 
+ 
+Identified Market Gap: No current solution consolidates the following capabilities in a single, 
+cohesive platform: 
+• 
+AI-assisted wardrobe tagging and outfit recommendation 
+• 
+Context-aware styling (e.g., weather, schedule) 
+• 
+Responsive, web-first accessibility 
+• 
+Sustainability features (e.g., optimizing wardrobe use, secondhand integration) 
+• 
+Privacy, security, and reliable performance engineering 
+Technical Foundations: Contextual and Explainable AI in Fashion 
+Contemporary research supports the feasibility and benefits of building sophisticated, attribute-
+aware, and context-sensitive fashion recommendation systems: 
+• 
+A semantic attribute–based recommender system (SAERS) enables fine-grained 
+recommendations and offers explainability through visual semantic highlights arXiv. 
+• 
+The AFRA model leverages self-attention and contextual features (e.g., time and recent 
+behavior) to improve recommendation relevance and user retention arXiv. 
+• 
+Visual preference modeling for cold-start scenarios demonstrates effective personalization 
+from minimal user input arXiv. 
+• 
+Hierarchical fashion graph networks integrate compatibility and user preference modeling, 
+improving outfit-level personalization arXiv. 
+Summary 
+Emerging from a rapidly expanding industry, AI-driven fashion personalization is backed by 
+empirical growth data and consumer demand. Despite the existence of notable solutions in parts 
+(wardrobe management, virtual try-on, AI styling), there remains a conspicuous absence of an 
+integrated, context-sensitive, web-first, sustainability-aware platform that also respects user 
+privacy and performs reliably. The proposed solution is therefore both academically justified and 
+strategically positioned within a high-growth, under-served domain. 
+ 
+ 
+
+
+=== PAGE 9 ===
+System Requirements 
+Functional Requirements 
+This section presents user stories, flows, and data considerations for critical features. 
+FR-01: Upload and Auto-Tag Clothing Item 
+User Story: As a user, I want to upload an image of a clothing item and have it automatically 
+tagged so I can manage my wardrobe easily. 
+Frontend: Upload form (drag-and-drop), optional tags, category selection; progress indicator; 
+clear success/error handling. 
+Server: Validate and sanitize input; call computer vision service (e.g., YOLOv8/TensorFlow 
+Lite) to infer type, color, styles; persist metadata and tags; encrypt images at rest; HTTPS for 
+transit. 
+Data: ClothingItems, Tags. Optional embeddings for semantic search. 
+FR-02: “Style Me” Recommendation (Weather + Prompt) 
+User Story: As a user, I want relevant outfit suggestions based on local weather and my prompt 
+(e.g., “smart casual coffee meeting”). 
+Frontend: Prompt field, location auto/manual, generate button, results with rationale. 
+Server: Fetch weather; retrieve wardrobe and preferences; build outfit candidates by category; 
+score combinations by weather fit, prompt fit, color harmony, user affinity, and recency; return 
+top 2–3 with explanations. 
+Data: StyleHistory (prompt, weather, returned sets, timestamps). 
+FR-03: Registration, Email Activation, and Login 
+Registration: Email, password, name; strong password rules; Argon2id hashing. 
+Activation: Send time-bound activation token by email; login disabled until activation; upon 
+activation, set emailVerified=true. 
+Login: JWT sessions; refresh/expiry policies; account lockout policies after repeated failures. 
+FR-04: Daily Outfit Planner 
+Calendar-based planning per date/event; conflict detection; overwrite confirmation; precise 
+retrieval fidelity for saved outfits. Data: Planner table with outfit references. 
+FR-05: Feedback and Personalization 
+Thumbs up/down and “Love/Not My Style” affect user preference vectors via exponential 
+moving average (EMA). Data: Feedback, StyleVectors. 
+ 
+FR-06: Search and Filter Wardrobe 
+User Story: As an authenticated user, I want to search and filter my wardrobe by category, 
+color, or tags so I can quickly find desired items. 
+Frontend: Search input with autocomplete; filter dropdowns for category and tags; real-time 
+results list with pagination; “Clear Filters” option. 
+Server: Parse search query; apply filter predicates; query wardrobe database with indexing for 
+performance; return matching item metadata. 
+Data: ClothingItems, Tags 
+
+
+=== PAGE 10 ===
+ 
+FR-07: Edit/Delete Wardrobe Item 
+User Story: As a user, I want to edit or delete wardrobe items so my wardrobe data stays 
+accurate. 
+Frontend: Item detail page with editable fields (name, category, tags, image); Save button with 
+confirmation; Delete button with irreversible action confirmation. 
+Server: Verify ownership; apply changes to item record; enforce CSRF protection; for deletion, 
+remove or mark record as deleted; log audit trail. 
+Data: ClothingItems, Tags 
+ 
+FR-08: Manage Tags 
+User Story: As a user, I want to manage tags in my wardrobe so they remain consistent and 
+organized. 
+Frontend: Tag management interface with add/remove functionality; bulk edit option; duplicate 
+prevention prompts; suggestions for canonical tags. 
+Server: Update tag associations; validate against duplicates; suggest standard tags; propagate 
+changes across linked wardrobe items. 
+Data: Tags, ClothingItems 
+ 
+FR-09: Password Reset 
+User Story: As a user, I want to securely reset my password so I can regain access if I forget it. 
+Frontend: Password reset request page; email confirmation link; new password entry form with 
+validation. 
+Server: Generate short-lived reset token; email token to user; verify token upon submission; 
+update password using strong rules; invalidate old sessions; apply rate limiting. 
+Data: Users 
+ 
+FR-10: Account Settings 
+User Story: As a user, I want to update my account details, preferences, and privacy options so 
+my profile reflects my needs. 
+Frontend: Settings page with sections for personal info (name, email), style preferences, and 
+notification settings; verification step for email change. 
+Server: Verify ownership; update user profile; re-verify email on change; store style 
+preferences; save notification settings. 
+Data: Users, StyleVectors 
+ 
+FR-11: Privacy Controls 
+User Story: As a user, I want to export or delete my account data so I can exercise my privacy 
+rights. 
+Frontend: Privacy section in settings; export button (CSV/JSON option); delete account button 
+with grace period and confirmation. 
+Server: On export, package user data per policy; on delete, anonymize or purge records; send 
+confirmation notifications; log requests. 
+Data: Users, ClothingItems, Tags, OutfitSuggestions, Planner, Feedback, StyleVectors 
+ 
+ 
+
+
+=== PAGE 11 ===
+Non-Functional Requirements (NFRs) 
+ID 
+Category 
+Requirement 
+Measure/Justification 
+NFR-
+01 
+Security 
+Passwords must use Argon2id 
+hashing prior to storage. 
+Code review and test accounts to 
+verify algorithm.2 
+NFR-
+02 
+Security 
+All API traffic must use TLS 
+1.3. 
+Network inspection verifies TLS 
+1.3 in production.3 
+NFR-
+03 
+Security 
+Only authenticated users can 
+manage wardrobe items. 
+Auth middleware enforces access 
+control; negative tests. 
+NFR-
+04 
+Performance 95% of API GET requests 
+return ≤300 ms. 
+Benchmark using Newman/JMeter; 
+latency histograms. 
+NFR-
+05 
+Performance Recommendation generation ≤
+3 s. 
+Load tests with representative 
+wardrobes. 
+NFR-
+06 
+Reliability 
+99.5% monthly uptime; ACID 
+for auth-critical writes. 
+Uptime monitoring and transaction 
+tests. 
+NFR-
+07 
+Usability 
+First-time user can generate one 
+outfit in ≤3 min. 
+Usability tests with novices. 
+NFR-
+08 
+Accessibility WCAG 2.1 AA compliance, 
+contrast ≥4.5: 1. 
+Axe/Lighthouse audits; manual 
+keyboard testing.4 
+Use Case Specifications 
+UC-01: Upload & Auto-Tag 
+Related Functional Requirement: FR-01 
+Primary Actor: Authenticated User 
+Stakeholders: User, System, Cloud Storage, Computer Vision (CV) Model 
+Preconditions: 
+• 
+The user is logged into the system. 
+• 
+The image file is accessible on the user’s device. 
+ 
+ 
+ 
+2 RFC 9106 
+3 RFC 8446 
+4 W3C WCAG 2.1 
+
+
+=== PAGE 12 ===
+Main Success Flow: 
+Step Action 
+1 
+User uploads an image via the UI (drag-and-drop or file browser). 
+2 
+System validates file type (e.g., JPG, PNG) and size (e.g., ≤10 MB). 
+3 
+Valid image is stored in cloud storage. 
+4 
+CV model analyzes the image to infer: category, dominant color(s), and descriptive 
+tags. 
+5 
+Tags and metadata are saved to the wardrobe database and linked to the user’s 
+account. 
+6 
+Confirmation message is displayed:“Item uploaded and tagged successfully.” 
+7 
+The clothing item appears in the user’s wardrobe. 
+Alternate Flows: 
+ID Trigger 
+Description 
+A1 Invalid file type or 
+size 
+System shows error:“Invalid file. Please upload a JPG or PNG 
+under 10 MB.”User can retry. 
+A2 CV model 
+processing fails 
+System prompts:“Auto-tagging failed. Please add tags 
+manually.”User enters tags manually. 
+A3 Offline mode 
+Upload is queued locally. Notification:“Upload paused. Will 
+resume when online.”Resumes automatically. 
+Postconditions 
+• 
+Clothing item is visible in the wardrobe with metadata and tags. 
+• 
+Data is securely stored in the database. 
+Additional Notes 
+• 
+CV model confidence threshold: <70% → fallback to manual tagging. 
+• 
+Images encrypted in transit and at rest. 
+ 
+UC-02: “Style Me” Recommendations 
+Related Functional Requirement: FR-02 
+Primary Actor: Authenticated User 
+Stakeholders: User, Recommendation Engine, Weather API 
+Preconditions: 
+• 
+User has at least one clothing item in their wardrobe. 
+ 
+ 
+
+
+=== PAGE 13 ===
+Main Success Flow 
+Step Action 
+1 
+User enters a style prompt (e.g., “casual office”) and selects location (auto-detected or 
+manual). 
+2 
+Backend fetches current weather data from the Weather API. 
+3 
+System retrieves user’s wardrobe items and style preferences. 
+4 
+Outfit candidates are generated and scored based on: 
+• Weather suitability 
+• Prompt relevance 
+• Color harmony 
+• User affinity (past likes) 
+• Wear recency 
+5 
+Top 2–3 outfit sets are returned with visual preview and rationale (e.g., “This outfit 
+matches your ‘smart casual’ preference and suits today’s 22°C weather.”). 
+Alternate Flows: 
+ID Trigger 
+Description 
+A1 Weather API 
+unavailable 
+System omits weather scoring; recommendations based on 
+prompt and style only. 
+A2 Wardrobe has <3 
+items 
+System returns partial suggestions with message:“Add more items 
+for better recommendations.” 
+Postconditions: 
+• 
+Suggested outfits are displayed with explanations. 
+• 
+Recommendation data is logged for personalization. 
+Additional Notes: 
+• 
+Recommendation engine uses ML model retrained weekly. 
+• 
+Rationale is generated using template-based natural language. 
+ 
+UC-03: Registration and Activation 
+Related Functional Requirement: FR-03 
+Primary Actor: New User 
+Stakeholders: User, Authentication System, Email Service 
+Preconditions: 
+• 
+User provides a valid email and password meeting security criteria. 
+ 
+ 
+
+
+=== PAGE 14 ===
+Main Success Flow: 
+Step 
+Action 
+1 
+User submits registration form (email, password, confirm password). 
+2 
+Server validates input and creates account. Password is hashed using Argon2id. 
+3 
+System sends activation email with a time-bound token (valid for 24 hours). 
+4 
+User clicks activation link in the email. 
+5 
+System verifies token and marks email as confirmed. 
+6 
+User can now log in. 
+Security Requirements: 
+• 
+Tokens expire after 24 hours. 
+• 
+Account locked after 5 failed activation attempts. 
+• 
+Rate limiting: max 3 registration attempts per IP/hour. 
+Postconditions: 
+• 
+Verified user account is created and ready for login. 
+Additional Notes: 
+• 
+Email service uses secure SMTP with TLS. 
+• 
+Failed registrations are logged for abuse monitoring. 
+ 
+UC-04: Daily Outfit Planner 
+Related Functional Requirement: FR-04 
+Primary Actor: Authenticated User 
+Stakeholders: User, Calendar System 
+Preconditions: 
+• 
+User is logged in and has at least one wardrobe item. 
+ 
+ 
+
+
+=== PAGE 15 ===
+Main Success Flow: 
+Step 
+Action 
+1 
+User opens the calendar view. 
+2 
+Selects a date and chooses an outfit from the wardrobe. 
+3 
+System saves the outfit assignment to the selected date. 
+4 
+Duplicate outfit plans for the same date are prevented. 
+Alternate Flows: 
+ID Trigger 
+Description 
+A1 Editing a planned 
+outfit 
+User selects a new outfit; system updates the record. 
+A2 Deleting a planned 
+outfit 
+User removes the outfit; system deletes the plan. Confirmation 
+required. 
+Postconditions: 
+• 
+Outfit is scheduled and retrievable on the planned date. 
+Additional Notes: 
+• 
+Calendar syncs across devices via cloud. 
+• 
+Users receive optional reminder notifications. 
+ 
+ 
+UC-05: Feedback & Personalization 
+Related Functional Requirement: FR-05 
+Primary Actor: Authenticated User 
+Stakeholders: User, Recommendation Engine 
+Preconditions: 
+• 
+User has received outfit suggestions. 
+Main Success Flow: 
+Step Action 
+1 
+User gives feedback: thumbs up/down or 1–5 star rating. 
+2 
+Optional comment is submitted (e.g., “Too formal”). 
+3 
+System stores feedback and updates user’s style vectors (e.g., weights for “casual,” 
+“bright colors”). 
+4 
+Future recommendations adjust scoring based on updated preferences. 
+
+
+=== PAGE 16 ===
+Postconditions: 
+• 
+Personalization model is updated. 
+• 
+Feedback is stored for analytics. 
+Additional Notes: 
+• 
+Feedback influences next 7 days of recommendations. 
+• 
+Anonymous analytics used for system improvement. 
+ 
+UC-06: Search and Filter Wardrobe 
+Related Functional Requirement: FR-06 
+Primary Actor: Authenticated User 
+Stakeholders: User, Search Engine 
+Preconditions 
+• 
+User is logged in and has wardrobe items. 
+Main Success Flow: 
+Step 
+Action 
+1 
+User opens the wardrobe view. 
+2 
+Enters a search query (e.g., “blue top”) or selects filters (category, color, tags). 
+3 
+System applies search/filter logic in real time. 
+4 
+Results update instantly with pagination (20 items per page). 
+5 
+User opens an item detail page for more info. 
+Alternate Flows: 
+ID Trigger 
+Description 
+A1 No results 
+found 
+System suggests:“No items match. Try clearing filters or search for 
+‘top’.” 
+Postconditions: 
+• 
+Matching items are displayed in the wardrobe view. 
+Additional Notes: 
+• 
+Search supports fuzzy matching and synonyms (e.g., “navy” → “blue”). 
+• 
+Filters persist during session. 
+
+
+=== PAGE 17 ===
+UC-07: Edit/Delete Wardrobe Item 
+Related Functional Requirement: FR-07 
+Primary Actor: Authenticated User 
+Stakeholders: User, Database 
+Preconditions: 
+• 
+User owns the wardrobe item. 
+Main Success Flow (Edit) 
+Step 
+Action 
+1 
+User opens the item detail page. 
+2 
+Edits fields (e.g., name, tags, category). 
+3 
+Saves changes; confirmation:“Changes saved.” 
+Main Success Flow (Delete) 
+Step 
+Action 
+1 
+User selects “Delete” on the item detail page. 
+2 
+System prompts:“Delete permanently? This cannot be undone.” 
+3 
+User confirms. Item is removed from wardrobe. 
+Security Requirements 
+• 
+Ownership check prevents unauthorized edits. 
+• 
+CSRF tokens used on all actions. 
+• 
+All deletions are logged in audit trail. 
+Postconditions: 
+• 
+Wardrobe reflects edits or removal. 
+Additional Notes: 
+• 
+Deleted items are soft-deleted for 30 days before purge. 
+UC-08: Manage Tags 
+Related Functional Requirement: FR-08 
+Primary Actor: Authenticated User 
+Stakeholders: User, Tag Management System 
+Preconditions: 
+• 
+User has wardrobe items with tags. 
+
+
+=== PAGE 18 ===
+Main Success Flow: 
+Step Action 
+1 
+User opens the tag management interface. 
+2 
+Adds new tags, removes unused ones, or performs bulk edits across items. 
+3 
+System suggests canonical tags (e.g., “jeans” vs “denim pants”) and prevents 
+duplicates. 
+4 
+Changes are saved. 
+Postconditions: 
+• 
+Tags are updated and propagated to relevant wardrobe items. 
+Additional Notes: 
+• 
+Canonical tags maintained in a controlled vocabulary. 
+• 
+Bulk edits support up to 50 items at once. 
+UC-09: Password Reset 
+Related Functional Requirement: FR-09 
+Primary Actor: Registered User 
+Stakeholders: User, Authentication System, Email Service 
+Preconditions: 
+• 
+User has a valid registered account. 
+Main Success Flow: 
+Step Action 
+1 
+User clicks “Forgot Password” and enters email. 
+2 
+System generates a short-lived token (expires in 1 hour) and sends reset link via 
+email. 
+3 
+User clicks link and enters a new password. 
+4 
+System validates password strength (min 8 chars, special char, etc.). 
+5 
+Password is updated; all previous sessions are invalidated. 
+Security Requirements: 
+• 
+Max 3 reset requests per hour per email where token expires in 1 hour. 
+• 
+Strong password rules enforced. 
+Postconditions: 
+• 
+User can log in with the new password. 
+
+
+=== PAGE 19 ===
+Additional Notes: 
+• 
+Reset link includes user’s email for transparency. 
+• 
+Activity logged for security monitoring. 
+UC-10: Account Settings 
+Related Functional Requirement: FR-10 
+Primary Actor: Authenticated User 
+Stakeholders: User, Profile System 
+Preconditions: 
+• 
+User is logged in. 
+Main Success Flow: 
+Step Action 
+1 
+User opens the settings page. 
+2 
+Updates profile (name, email), style preferences (e.g., “prefers minimalism”), or 
+notification settings. 
+3 
+If email is changed, system sends a verification email. 
+4 
+System saves changes and displays confirmation. 
+Postconditions: 
+• 
+Profile and preferences are updated in the database. 
+Additional Notes: 
+• 
+Unverified email changes do not take effect until confirmation. 
+• 
+Preferences influence recommendation engine. 
+ 
+ 
+
+
+=== PAGE 20 ===
+ 
+Use Case Diagram 
+ 
+Figure: Use case diagram 
+
+
+=== PAGE 21 ===
+Sequence Diagrams 
+This section presents high-level web flows for recommendations, registration/activation, and 
+upload/auto-tagging. 
+User Registration 
+ 
+Figure: User registration Sequence Diagram 
+UML code for registration sequence diagram: 
+sequenceDiagram 
+    autonumber 
+    actor U as User 
+    participant Web as Web App (Frontend) 
+    participant Auth as Auth API 
+    participant DB as Database 
+    participant Email as Email Service 
+ 
+    U ->> Web: Open Register page 
+    U ->> Web: Submit {email, password, name} 
+    Web ->> Auth: POST /auth/register {email, password, name} 
+    Auth ->> DB: Create user(emailVerified=false, passwordHash=Argon2id) 
+    DB -->> Auth: userId 
+    Auth ->> Auth: Issue activation token (ttl=24h) 
+    Auth ->> Email: Send activation link(token) 
+    Auth -->> Web: 202 Accepted (Check your email) 
+ 
+    %% Activation step 
+    U ->> Web: Click activation link 
+    Web ->> Auth: POST /auth/activate {token} 
+
+
+=== PAGE 22 ===
+    Auth ->> DB: Set emailVerified=true 
+    DB -->> Auth: OK 
+    Auth -->> Web: 200 Activated 
+Upload & Auto Tagging 
+ 
+Figure: Upload & Auto Tagging Sequence Diagram 
+UML code for upload and auto tagging sequence diagram: 
+sequenceDiagram 
+    autonumber 
+    actor U as User 
+    participant Web as Web App (Frontend) 
+    participant API as Backend API 
+    participant CV as CV Service 
+    participant Store as Image Storage 
+    participant DB as Database 
+ 
+    U ->> Web: Select file / drag-drop image 
+    Web ->> API: POST /wardrobe (multipart) 
+    API ->> API: Validate MIME/size; sanitize filename 
+    API ->> Store: Upload original; create thumbnail 
+    Store -->> API: URLs (imageUrl, thumbUrl) 
+    API ->> CV: POST /classify {imageUrl} 
+    CV -->> API: {category, color, tags[], confidence} 
+    API ->> DB: INSERT ClothingItems + Tags 
+    DB -->> API: itemId 
+    API -->> Web: 201 { itemId, tags } 
+    Web -->> U: Show confirmation 
+
+
+=== PAGE 23 ===
+“Style Me” 
+ 
+Figure: “Style Me” Sequence Diagram 
+UML code for “Style Me” sequence diagram: 
+sequenceDiagram 
+    autonumber 
+    actor U as User 
+    participant Web as Web App (Frontend) 
+    participant API as Backend API 
+    participant DB as Database 
+    participant Weather as Weather API 
+    participant Rec as Recommender 
+ 
+    U ->> Web: Opens Style Me, enters prompt/location 
+    Web ->> API: POST /recommendations {prompt, location} 
+    API ->> DB: Fetch wardrobe, profile, history 
+    DB -->> API: Items, preferences, history 
+    API ->> Weather: GET weather(location) 
+    Weather -->> API: Weather data 
+    API ->> Rec: Generate outfits(items, profile, history, prompt, weather) 
+    Rec -->> API: Top N outfits with rationale 
+    API ->> DB: Insert suggestion history 
+    API -->> Web: outfits[], rationale 
+    Web -->> U: Display 2–3 outfits + reasons 
+ 
+
+
+=== PAGE 24 ===
+System Architecture & Design 
+High-Level Architecture 
+The architecture separates concerns into a web frontend, backend API, recommendation service, 
+and storage layers. The web frontend consumes REST endpoints for authentication, wardrobe 
+management, and recommendations. A computer vision microservice handles classification, while 
+a recommendation module combines rule-based and data-driven signals (weather, prompt, color 
+harmony, user affinity). 
+Components 
+• Web Frontend: Accessible UI for authentication, wardrobe, “Style Me,” planner, 
+feedback. 
+• Backend API: Authentication (JWT), business logic, validation, data orchestration. 
+• Computer Vision Service: Clothing classification (category, color, style attributes). 
+• Recommendation Service: Scores outfit candidates using multi-signal weighting. 
+• Weather Integration: Retrieves contextual data (temperature, precipitation, wind, 
+condition). 
+• Storage: Relational database (users, items, tags, history), object storage for images. 
+Pseudocode for Main Processes 
+Upload and Auto-Tag 
+FUNCTION UploadClothingItem(user, imageFile): 
+  REQUIRE IsAuthenticated(user) 
+  VALIDATE IsValidImage(imageFile) 
+  imageUrl <- Storage.Upload(imageFile) 
+  thumbUrl <- Storage.GenerateThumbnail(imageFile) 
+  TRY attributes <- CV.Classify(imageUrl) 
+  CATCH -> attributes <- {category: "Uncategorized", color: "Unknown", tags: []} 
+  attributes <- Normalize(attributes) 
+  BEGIN TRANSACTION 
+    itemId <- DB.Insert(ClothingItems, { userId: user.id, imageUrl, thumbUrl, categor
+y: attributes.category, color: attributes.color }) 
+    FOR tag IN attributes.tags: DB.Insert(Tags, { itemId, tag }) 
+  COMMIT 
+  RETURN Success({ itemId, tags: attributes.tags }) 
+“Style Me” Recommendations 
+FUNCTION GenerateOutfits(user, prompt, location): 
+  REQUIRE IsAuthenticated(user) 
+  items <- DB.SelectAll(ClothingItems WHERE userId = user.id) 
+  REQUIRE Count(items) >= 3 
+  weather <- GetWeather(location) OR {status:"unknown"} 
+  profile <- DB.SelectOne(UserProfile WHERE userId = user.id) 
+  history <- DB.Select(Feedback WHERE userId = user.id ORDER BY timestamp DESC LIMIT 
+200) 
+  pool <- FilterByWearability(items, weather, profile) 
+  candidates <- BuildCandidateSets(pool) 
+
+
+=== PAGE 25 ===
+  scored <- [] 
+  FOR set IN candidates: 
+    s1 <- ScoreWeatherFit(set, weather) 
+    s2 <- ScorePromptFit(set, prompt) 
+    s3 <- ScoreColorHarmony(set) 
+    s4 <- ScoreUserAffinity(set, history, profile) 
+    s5 <- PenalizeRecentRepeats(set, history) 
+    total <- WeightedSum({s1:0.35, s2:0.25, s3:0.20, s4:0.15, s5:0.05}) 
+    scored.Append({set, score: total}) 
+  ranked <- SortDescending(scored, by="score") 
+  top <- EnforceDiversity(ranked, k=3) 
+  DB.Insert(OutfitSuggestions, { userId: user.id, prompt, weather, items: Map(top, Ge
+tIds) }) 
+  RETURN Success({ outfits: top }) 
+Registration, Email Activation, and Login 
+FUNCTION RegisterAndActivate(email, password, name): 
+  REQUIRE IsValidEmail(email) AND IsStrongPassword(password) 
+  hash <- Argon2id.Hash(password) 
+  userId <- DB.Insert(Users, { email, passwordHash: hash, name, emailVerified: false 
+}) 
+  token <- IssueActivationToken(userId, ttl=24h) 
+  Email.Send(email, ActivationLink(token)) 
+  RETURN Success("Activation email sent") 
+ 
+FUNCTION ActivateAccount(token): 
+  VALIDATE token AND NOT Expired(token) 
+  userId <- GetUserFromToken(token) 
+  DB.Update(Users, userId, { emailVerified: true }) 
+  RETURN Success("Account activated") 
+ 
+UI Design Principles 
+Consistent primary actions; responsive layouts; accessible color contrast and focus states; semantic 
+HTML; descriptive alt text for imagery; clear feedback on actions; minimal cognitive load; 
+progressive disclosure for advanced options. 
+ 
+ 
+
+
+=== PAGE 26 ===
+Wireframes 
+Login/Signup UI Design 
+ 
+Figure: Login/signup page 
+Account Activation UI Design 
+ 
+Figure: Account Activation page 
+
+
+=== PAGE 27 ===
+Dashboard UI Design 
+Figure: Dashboard page 
+Image Upload UI Design 
+ 
+Figure: Image upload page 
+ 
+
+
+=== PAGE 28 ===
+Wardrove UI Design 
+ 
+Figure: Wardrove page 
+ 
+“Style me” UI Design 
+ 
+Figure: “Style me” page 
+
+
+=== PAGE 29 ===
+Planner UI Design 
+ 
+Figure: Planner page 
+ 
+Account Settings 
+ 
+Figure: Account Settings page 
+
+
+=== PAGE 30 ===
+Data & API Specifications 
+Data Dictionary 
+Key entities and attributes used by the system. 
+Entity 
+Field 
+Description 
+Users 
+userId (UUID, PK) 
+Unique user identifier. 
+Users 
+email (TEXT, UNIQUE) 
+Login identifier; used for activation. 
+Users 
+passwordHash (TEXT) 
+Argon2id hash of password. 
+Users 
+emailVerified (BOOL) 
+Email activation status; required for 
+login. 
+ClothingItems 
+itemId (UUID, PK) 
+Unique clothing item id. 
+ClothingItems 
+userId (UUID, FK) 
+Owner reference to Users. 
+ClothingItems 
+imageUrl/thumbUrl (TEXT) 
+Storage locations for media. 
+ClothingItems 
+category/color (TEXT) 
+CV-inferred attributes. 
+Tags 
+tagId (UUID, PK) 
+Unique tag id. 
+Tags 
+itemId (UUID, FK) 
+Associated clothing item. 
+Tags 
+tag (TEXT) 
+Normalized tag term. 
+OutfitSuggestions suggestionId (UUID, PK) 
+Suggestion record id. 
+OutfitSuggestions userId (UUID, FK) 
+Owner reference to Users. 
+OutfitSuggestions prompt/weather/itemsIncluded Context and selected items. 
+Planner 
+planId (UUID, PK) 
+Planned outfit id. 
+Planner 
+date (DATE) 
+Scheduled date; unique per user. 
+Feedback 
+feedbackId (UUID, PK) 
+Feedback record id. 
+Feedback 
+rating (INT) 
+-1 (down), 0 (neutral), 1 (up). 
+StyleVectors 
+vector (BLOB) 
+User preference representation. 
+ 
+ 
+ 
+
+
+=== PAGE 31 ===
+Entity-Relationship Diagram 
+ 
+Figure: Entity Relationship Diagram 
+UML code for ERD: 
+erDiagram 
+  USERS ||--|| STYLEVECTORS : has 
+  USERS ||--o{ CLOTHINGITEMS : owns 
+  CLOTHINGITEMS ||--o{ TAGS : has 
+  USERS ||--o{ OUTFITSUGGESTIONS : receives 
+  USERS ||--o{ PLANNER : plans 
+  USERS ||--o{ FEEDBACK : leaves 
+  USERS ||--|| USERPROFILE : has 
+ 
+  USERS { 
+    string user_id 
+    string email 
+    string password_hash 
+    string name 
+    boolean email_verified 
+    string created_at 
+  } 
+ 
+  USERPROFILE { 
+    string user_id 
+    string style_prefs 
+    string last_known_location 
+  } 
+ 
+
+
+=== PAGE 32 ===
+  CLOTHINGITEMS { 
+    string item_id 
+    string user_id 
+    string image_url 
+    string thumb_url 
+    string category 
+    string color 
+    string created_at 
+  } 
+ 
+  TAGS { 
+    string tag_id 
+    string item_id 
+    string tag 
+  } 
+ 
+  OUTFITSUGGESTIONS { 
+    string suggestion_id 
+    string user_id 
+    string prompt 
+    string weather 
+    string items_included 
+    string created_at 
+  } 
+ 
+  PLANNER { 
+    string plan_id 
+    string user_id 
+    string date 
+    string outfit_ids 
+    string note 
+    string created_at 
+  } 
+ 
+  FEEDBACK { 
+    string feedback_id 
+    string user_id 
+    string outfit_id 
+    int rating 
+    string created_at 
+  } 
+ 
+  STYLEVECTORS { 
+    string user_id 
+    string vector 
+  } 
+ 
+
+
+=== PAGE 33 ===
+Data Model Sketch (Illustrative) 
+Table Users(userId PK, email UNIQUE, passwordHash, name, emailVerified, createdAt) 
+Table UserProfile(userId FK->Users, stylePrefs JSON, lastKnownLocation TEXT) 
+Table ClothingItems(itemId PK, userId FK->Users, imageUrl, thumbUrl, category, color, 
+createdAt) 
+Table Tags(tagId PK, itemId FK->ClothingItems, tag) 
+Table OutfitSuggestions(suggestionId PK, userId FK->Users, prompt, weather JSON, item
+sIncluded JSON, createdAt) 
+Table Planner(planId PK, userId FK->Users, date, outfitIds JSON, note, createdAt) 
+Table Feedback(feedbackId PK, userId FK->Users, outfitId, rating INT, timestamp) 
+Table StyleVectors(userId PK FK->Users, vector BLOB) 
+REST API Specification 
+Representative endpoints with request/response formats. 
+Authentication 
+POST /api/auth/register 
+Request: { "email": "x@x.com", "password": "P@ssw0rd!", "name": "User" } 
+Response: 202 { "message": "Activation email sent" } 
+ 
+POST /api/auth/activate 
+Request: { "token": "<jwt>" } 
+Response: 200 { "message": "Account activated" } 
+ 
+POST /api/auth/login 
+Request: { "email": "x@x.com", "password": "P@ssw0rd!" } 
+Response: 200 { "token": "<jwt>", "expiresIn": 604800 } 
+Wardrobe 
+GET /api/wardrobe 
+Response: 200 [ { "itemId": "...", "category": "top", "color": "blue", "tags": ["casu
+al"] }, ... ] 
+ 
+POST /api/wardrobe (multipart/form-data) 
+Fields: imageFile, category?, tags[]? 
+Response: 201 { "itemId": "...", "tags": ["t-shirt", "blue", "casual"] } 
+Recommendations 
+GET /api/recommendations?location=City&prompt=smart+casual 
+Response: 200 { 
+  "outfits": [ 
+    { "top": "White Linen Shirt", "bottom": "Khaki Shorts", "shoes": "White Sneakers"
+, 
+      "accessories": ["Sunglasses"], "reason": "Ideal for sunny 28C" }, 
+    ... 
+  ] 
+} 
+
+
+=== PAGE 34 ===
+Sample REST API Endpoints 
+POST /api/auth/register { email, password, name } 
+POST /api/auth/activate { token } 
+POST /api/auth/login { email, password } 
+GET  /api/wardrobe           // list items 
+POST /api/wardrobe           // upload item 
+GET  /api/recommendations?location=...&prompt=... 
+POST /api/planner            // save planned outfit 
+POST /api/feedback           // thumbs up/down 
+Security & Compliance 
+Security Architecture and Threat Model 
+We adopt a defense-in-depth posture and assess threats using STRIDE. 
+STRIDE 
+Risk Example 
+Mitigation 
+Spoofing 
+Credential stuffing on 
+login 
+Argon2id, lockouts, rate limiting, IP 
+throttling, MFA (future). 
+Tampering 
+Image metadata injection 
+Sanitize inputs; content-type checks; store 
+immutable versions. 
+Repudiation 
+Disputed actions 
+Audit logs with user_id, timestamps, IPs. 
+Information 
+Disclosure 
+MITM on API 
+TLS 1.3, HSTS, secure cookies for tokens 
+(if browser storage). 
+Denial of Service 
+Burst traffic on rec 
+endpoints 
+Autoscaling, request quotas, caching, 
+circuit breakers. 
+Elevation of 
+Privilege 
+Bypass authZ to edit 
+others’ wardrobe 
+Robust authorization checks; test negative 
+cases. 
+Data Protection Impact Assessment (DPIA) Summary 
+• Data: Email, hashed passwords, clothing item images/metadata, minimal preferences. 
+• Risks: Unauthorized access to images; linkage attacks via metadata. 
+• Controls: Encryption at rest; strict ACLs; minimal metadata; signed URLs with short TTL. 
+• Retention: See §; deletions honored within policy windows. 
+Data Retention and Disposal Policy 
+• User data retained while account is active; 30-day soft delete grace; then purge from 
+backups within 90 days. 
+• Logs retained 30 days (hot), 180 days (warm), then aggregated. 
+• Image storage lifecycle rules: thumbnails retained; originals archived per user preference. 
+
+
+=== PAGE 35 ===
+Ethical, Legal, and Privacy Considerations 
+Compliance with applicable privacy standards; explicit consent for data processing; transparent 
+privacy policy; secure storage; minimal data collection; right to deletion; compliance with 
+Australian Privacy Principles and GDPR where applicable. 
+ 
+Accessibility Conformance 
+The web UI targets WCAG 2.1 AA. 
+Criterion 
+Implementation 
+1.4.3 Contrast 
+(Minimum) 
+Color system ensures ≥4.5: 1 for text; automated audits per 
+commit. 
+2.1.1 Keyboard 
+All interactive controls accessible by keyboard; visible focus 
+order. 
+2.4.6 Headings and 
+Labels 
+Semantic HTML with ARIA where appropriate; consistent 
+hierarchy. 
+3.3.1 Error Identification 
+Inline error messages and ARIA-live regions for form validation. 
+ 
+ 
+ 
+
+
+=== PAGE 36 ===
+Resource Management 
+Human Resources 
+Project Manager, Web Developer, Backend/API Engineer, Computer Vision/ML Engineer, UI/UX 
+Designer, DBA, QA Engineer, Cloud/DevOps Engineer, Lecturer/Coordinator. 
+Technology Resources 
+Web framework, REST API stack, CV framework (YOLOv8/TensorFlow Lite), object storage 
+(e.g., S3/Firebase), RDBMS, PlantUML/Mermaid, GitHub, Office 365/Discord. 
+Time Resources 
+12-week plan with weekly reviews, buffers for key milestones; see §. 
+ 
+Resource Plan 
+Identification and Allocation 
+Human, technical, financial, and knowledge resources are identified with clear owners and 
+deliverables. Cloud costs, API subscriptions, and storage are budgeted with monitoring alerts. 
+Collaboration tools (Office 365, Discord) and GitHub support team workflows and documentation. 
+Contingency Planning 
+Cross-training, backup roles, code and data backups, local caching for temporary network outages, 
+timeline buffers, stakeholder communication protocols, and alternative providers for weather 
+APIs. 
+ 
+ 
+
+
+=== PAGE 37 ===
+Timeline (Gantt) 
+The detailed schedule is modeled as a Gantt chart. 
+ 
+Figure: Project Timeline Gantt Chart 
+Testing & Quality Assurance 
+Testing and Evaluation 
+Performance 
+Latency budgets for core endpoints; synthetic and real-user monitoring; load testing scenarios for 
+wardrobes of varying sizes; caching strategy validation. 
+Security 
+Penetration testing (auth flows, storage access, input validation), dependency audits, TLS 
+verification, session management tests, rate limiting and lockout checks. 
+Accessibility and Usability 
+WCAG 2.1 AA audits with Lighthouse/Axe; keyboard-only navigation; user testing with first-time 
+users to confirm task completion within target duration. 
+Acceptance Criteria 
+Representative criteria per requirement to guide validation. 
+Req 
+Acceptance Criteria 
+FR-01 Upload accepts PNG/JPEG up to configured size; invalid files rejected with clear 
+error; CV returns at least category and color with confidence; manual tags persist; 
+encryption at rest verified. 
+FR-02 With valid wardrobe and weather, “Style Me” returns 2–3 outfits within 3 seconds 
+95% of the time; each outfit includes a simple rationale. 
+FR-03 New users cannot log in until activation; activation links expire after 24h; lockout 
+after repeated failed logins; Argon2id used for password hashing. 
+FR-04 Planner saves and retrieves outfits exactly; duplicate date prompts overwrite 
+confirmation; timezone-safe storage. 
+FR-05 Feedback updates user preference vector; duplicate submissions within 2 minutes are 
+ignored (idempotency). 
+
+
+=== PAGE 38 ===
+NFR-
+01 
+Pen tests show no plaintext passwords; database dump confirms Argon2id hashes. 
+NFR-
+02 
+TLS 1.3 enforced; HSTS enabled; Qualys grade A. 
+NFR-
+04 
+95th percentile latency for GET endpoints ≤300 𝑚𝑠 under specified load. 
+NFR-
+08 
+Axe audit yields < 5 minor issues; keyboard-only navigation passes designated user 
+journeys. 
+ 
+ 
+ 
+
+
+=== PAGE 39 ===
+Requirements Traceability Matrix (RTM) 
+This RTM maps functional and non-functional requirements to use cases, diagrams, and 
+verification methods to ensure comprehensive coverage. 
+Requir
+ement 
+Description 
+Use 
+Cases 
+Diagrams 
+Verification/Tests 
+FR-01 
+Upload & Auto-Tag clothing 
+UC-01 
+Sequence: 
+Upload; 
+ER 
+API upload tests; CV stub 
+tests; DB assertions. 
+FR-02 
+“Style Me” recommendation 
+UC-02 
+Sequence: 
+Style Me; 
+ER 
+Unit tests for scoring; 
+integration with weather; 
+latency checks. 
+FR-03 
+Registration/Activation/Login 
+UC-03 
+Sequence: 
+Registratio
+n; ER 
+Auth flow tests; token 
+expiry; lockouts; email 
+delivery. 
+FR-04 
+Daily Outfit Planner 
+UC-04 
+ER 
+Planner CRUD tests; 
+duplication handling; 
+retrieval accuracy. 
+FR-05 
+Feedback & Personalization 
+UC-05 
+ER 
+Feedback idempotency; 
+EMA update correctness. 
+NFR-01 Argon2id hashing 
+UC-03 
+Sequence: 
+Registratio
+n 
+Code inspection; hash 
+verification; config checks. 
+NFR-02 TLS 1.3 
+All 
+N/A 
+Network inspection; 
+configuration tests. 
+NFR-03 AuthZ for wardrobe ops 
+UC-
+01/04/0
+5 
+ER 
+Negative tests 
+(unauthenticated/unauthoriz
+ed). 
+NFR-04 API GET ≤300 𝑚𝑠 
+UC-02 
+Sequence: 
+Style Me 
+Load tests; SLIs/SLOs. 
+NFR-05 Rec generation ≤3 𝑠 
+UC-02 
+Sequence: 
+Style Me 
+Performance tests; profiling. 
+NFR-06 99.5% uptime; ACID 
+UC-
+03/04 
+ER 
+Uptime monitoring; 
+transaction tests. 
+NFR-07 First task ≤3 𝑚𝑖𝑛 
+UC-02 
+N/A 
+Usability tests; observation. 
+NFR-08 WCAG 2.1 AA 
+UC-
+01/02 
+N/A 
+Axe/Lighthouse; manual 
+keyboard tests. 
+ 
+ 
+ 
+
+
+=== PAGE 40 ===
+Test Case Catalog 
+Illustrative test coverage for core flows. 
+ID 
+Area 
+Description 
+TC-
+001 
+Auth 
+Register valid user; expect activation email issued; login blocked 
+before activation. 
+TC-
+002 
+Auth 
+Activation with expired token; expect failure and reissue path. 
+TC-
+003 
+Wardrobe 
+Upload valid JPEG; expect 201 with tags; item displayed. 
+TC-
+004 
+Wardrobe 
+Upload invalid MIME; expect 400 with descriptive error. 
+TC-
+005 
+Recs 
+Recommendations with prompt and weather; response time ≤3 𝑠; 2–
+3 outfits. 
+TC-
+006 
+Recs 
+Weather API down; fallback path used; response includes note. 
+TC-
+007 
+Planner 
+Save outfit to date; retrieve identical set; no drift. 
+TC-
+008 
+Feedback 
+Submit thumbs up; preference vector updated; duplicate ignored 
+within TTL. 
+TC-
+009 
+Access 
+Attempt edit on another user’s item; expect 403. 
+TC-
+010 
+Accessibility Keyboard navigation covers upload and "Style Me" flows without 
+trap. 
+ 
+Error Catalogue 
+Standardized error messages and HTTP codes improve developer and user experience. 
+Code 
+HTTP Message 
+AUTH_001 
+401 
+Invalid credentials or account not activated. 
+AUTH_002 
+429 
+Too many attempts; please try again later. 
+WARD_001 400 
+Unsupported image type or size limit exceeded. 
+WARD_002 415 
+Image content-type not allowed. 
+RECS_001 
+503 
+Recommendation service temporarily unavailable. 
+WEAT_001 
+502 
+Weather provider unreachable; using cached data. 
+PLNR_001 
+409 
+A plan already exists for this date. 
+GEN_001 
+500 
+An unexpected error occurred; please retry. 
+ 
+
+
+=== PAGE 41 ===
+Operational Considerations 
+Logging and Monitoring 
+• Structured logs (JSON) with request IDs and user IDs where appropriate. 
+• Metrics: request latency/throughput, error rates, cache hit ratio, CV service latency. 
+• Alerts: elevated 5xx rates, p95 latency breaches, failed email deliverability spikes. 
+• Dashboards for auth, wardrobe, recommendations, and planner subsystems. 
+Email Templates 
+Concise, branded templates for key communications. 
+Activation Email 
+Subject: Activate your account 
+Body: Hello name, click https://app.example.com/activate?token=... to activate your account. 
+This link expires in 24 hours. 
+Password Reset 
+Subject: Password reset request 
+Body: We received a request to reset your password. Click 
+https://app.example.com/reset?token=....  
+If you didn’t request this, ignore this email. 
+Maintenance and Operations 
+• Weekly dependency updates; monthly security reviews; quarterly load tests. 
+• Incident response runbook with severity levels and on-call rotations. 
+• Backup/restore drills semi-annually with RTO/RPO targets. 
+Future Enhancements 
+• Explainable recommendations (feature attributions, color theory rationale). 
+• Collaborative filtering using anonymized cross-user vectors. 
+• Outfit collage generation and printable lookbooks. 
+• Optional social sharing with privacy-preserving defaults. 
+ 
+ 
+ 
+
+
+=== PAGE 42 ===
+Risk Management 
+The project maintains an active risk register with likelihood and impact ratings, mitigations, and 
+monitoring actions. 
+ID 
+Description 
+Likelihood Impact 
+Mitigation 
+R1 
+Data quality issues (missing 
+timestamps, outliers) 
+Medium 
+High 
+Strict preprocessing, schema 
+validation, dataset versioning. 
+R2 
+Connectivity/Weather API 
+downtime 
+Low 
+High 
+Retries with backoff, caching, 
+graceful fallbacks. 
+R3 
+Threshold misconfiguration 
+(false alerts/poor recs) 
+Low 
+Medium Data-driven defaults, admin 
+UI, audit logs, change reviews. 
+R4 
+Security/privacy breach 
+Low 
+High 
+TLS 1.3, Argon2id, encryption 
+at rest, least privilege, secure 
+SDLC. 
+R5 
+Schedule/team availability 
+risk 
+Medium 
+Medium Buffers, cross-training, weekly 
+reviews, scope focus on MVP. 
+R6 
+Excessive latency on 
+recommendation 
+Medium 
+Medium Caching of wardrobe data, 
+efficient scoring, profiling and 
+load tests. 
+R7 
+Image storage costs escalate 
+Low 
+Medium Lifecycle policies, thumbnails, 
+compression, quotas. 
+R8 
+CV model misclassification 
+Medium 
+Medium Manual tag overrides, 
+confidence thresholds, model 
+updates. 
+R9 
+Accessibility violations 
+Low 
+High 
+Automated audits (Axe), 
+manual checks, design 
+reviews. 
+R10 Data loss/corruption 
+Low 
+High 
+Automated backups, ACID 
+transactions, restore tests. 
+ 
+ 
+
+
+=== PAGE 43 ===
+Conclusion 
+This web-based AI personal stylist and wardrobe manager delivers an end-to-end experience that 
+integrates wardrobe management, computer vision tagging, context-aware recommendations, and 
+robust non-functional guarantees. It addresses user needs for personalization and convenience 
+while upholding rigorous standards for security, performance, accessibility, and reliability. The 
+project plan, risks, and resources outline a feasible path to delivery within academic timelines. 
+References 
+1. Accenture. (2023). Retail tech trends: Intelligent personalization. Accenture. 
+https://www.accenture.com 
+2.  Deloitte. (2023). Digital consumer trends survey. Deloitte. https://www2.deloitte.com 
+3. GlobalData. (2023). Sustainability in fashion: Consumer preferences report. GlobalData. 
+https://www.globaldata.com 
+4.   GSMA. (2024). The mobile economy report. GSMA. https://www.gsma.com 
+5. Internet Engineering Task Force. (2018). The transport layer security (TLS) protocol 
+version 1.3 (RFC 8446). RFC Editor. https://www.rfc-editor.org/rfc/rfc8446 
+6.  Internet Engineering Task Force. (2021). The memory-hard Argon2 password hash 
+(RFC 9106). RFC Editor. https://www.rfc-editor.org/rfc/rfc9106 
+7. McKinsey & Company. (2024). The state of fashion 2024 report. McKinsey & Company. 
+https://www.mckinsey.com 
+8.  OpenWeather. (n.d.). OpenWeatherMap API documentation. OpenWeather. 
+https://openweathermap.org/api 
+9. Statista. (2024). Mobile fashion apps usage forecast. Statista. https://www.statista.com 
+10. Ultralytics. (n.d.). YOLOv8 documentation. Ultralytics. https://docs.ultralytics.com 
+11. World Wide Web Consortium. (2018). Web content accessibility guidelines (WCAG) 2.1. 
+W3C. https://www.w3.org/TR/WCAG21/ 
+12. TensorFlow. (n.d.). TensorFlow Lite documentation. TensorFlow. 
+https://www.tensorflow.org/lite 
+Glossary 
+• CV: Computer Vision. 
+• EMA: Exponential Moving Average. 
+• JWT: JSON Web Token. 
+• NFR: Non-Functional Requirement. 
+• RTM: Requirements Traceability Matrix. 
+• WCAG: Web Content Accessibility Guidelines. 
+ 
+ 
+ 
+     
+
+
+=== PAGE 44 ===
+Student Contribution Report 
+This project was a collaborative effort where each member contributed distinct components 
+aligned with the marking criteria. Responsibilities were allocated according to strengths and 
+interests, ensuring that all major sections of the report were thoroughly addressed. All members 
+participated in peer review and editing to maintain consistency in style, terminology, and 
+formatting. Weekly meetings and shared documentation platforms facilitated coordination, 
+enabling smooth integration of work and alignment with project objectives. The table below 
+details, 
+ 
+Student 
+ID 
+Responsibility 
+Areas (per rubric) 
+Specific Tasks Delivered 
+Evidence / Artifacts 
+in Report 
+Tasnim 
+Chowdhury 
+S8073439 Revised Introduction 
++ 
+Functional 
+Requirements 
++ 
+Non-functional 
+Requirements; Use 
+Cases; 
+Sequence 
+Diagrams 
+• Rewrote Introduction with 
+clarified 
+context/purpose/scope and 
+integrated 
+market/competitor 
+gap 
+findings. 
+• Expanded and aligned FR-
+01…FR-11 to project aims; 
+added frontend/server/data 
+notes 
+and 
+success 
+conditions. 
+• Strengthened NFRs with 
+measurable 
+targets 
+(security, 
+performance, 
+reliability, 
+usability, 
+accessibility). 
+• Authored UC-01…UC-10 
+including 
+preconditions, 
+main/alternate flows, and 
+postconditions. 
+• 
+Produced 
+sequence 
+diagrams 
+for 
+Registration/Activation, 
+Upload & Auto-Tag, and 
+“Style Me” flows (with 
+UML source). 
+Sections: 
+Introduction; 
+Functional 
+Requirements; Non-
+Functional 
+Requirements; 
+Use 
+Case Specifications; 
+Sequence Diagrams. 
+Masud 
+Rana 
+S8113317 Resource 
+Management; 
+Timeline 
+• 
+Compiled 
+Human/Tech/Time 
+resources; mapped roles 
+(PM, API Eng, CV/ML, 
+DBA, 
+QA, 
+DevOps, 
+UI/UX). 
+• 
+Wrote 
+Sections: 
+Resource 
+Management; 
+Resource 
+Plan; 
+Timeline (Gantt). 
+
+
+=== PAGE 45 ===
+allocation/ownership, 
+budgeting, and contingency 
+plans (cross-training, alt. 
+API providers, backups). 
+• 
+Built 
+detailed 
+Gantt 
+(phases, 
+milestones, 
+dependencies, 
+buffers) 
+aligning 
+deliverables 
+to 
+schedule. 
+Risheetha 
+Bommanchi 
+S8087835 Pseudocode; 
+UI 
+Design 
+• Authored production-style 
+pseudocode for Upload & 
+Auto-Tag, GenerateOutfits 
+(“Style Me”), Register & 
+Activate with clear control 
+flow and error handling. 
+• 
+Drafted 
+UI 
+design 
+principles and wireframes 
+for 
+Login/Activation, 
+Dashboard, 
+Wardrobe, 
+Image Upload, “Style Me”, 
+Planner, 
+and 
+Settings, 
+ensuring WCAG 2.1 AA 
+considerations. 
+Sections: Pseudocode 
+for Main Processes; 
+UI Design Principles; 
+Wireframes. 
+Muskan 
+Muskan 
+S4680497 Risk 
+Management; 
+Conclusion 
+• Built comprehensive risk 
+register 
+(R1–R10) 
+with 
+likelihood/impact, 
+mitigations, and monitoring 
+actions 
+(security/privacy, 
+latency, 
+misclassification, 
+accessibility, cost control, 
+data 
+quality, 
+API 
+downtime). 
+• Wrote the Conclusion 
+synthesizing requirements, 
+architecture, testing, and 
+roadmap; tied outcomes to 
+objectives 
+and 
+future 
+enhancements. 
+Sections: 
+Risk 
+Management; 
+Conclusion. 
+ 
+ 
+

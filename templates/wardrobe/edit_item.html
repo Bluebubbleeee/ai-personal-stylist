@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit {{ item.name }} - AI Stylist{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-2">
+                            <li class="breadcrumb-item"><a href="{% url 'wardrobe' %}" class="text-decoration-none">Wardrobe</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'item_detail' item.item_id %}" class="text-decoration-none">{{ item.name|truncatechars:30 }}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                        </ol>
+                    </nav>
+                    <h1 class="h2 mb-0">Edit Item</h1>
+                </div>
+                <a href="{% url 'item_detail' item.item_id %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Item
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Image Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-0">
+                    <div class="position-relative">
+                        {% if item.image %}
+                        <img src="{{ item.image.url }}" 
+                             class="img-fluid w-100 rounded" 
+                             alt="{{ item.name }}"
+                             style="max-height: 500px; object-fit: contain; background-color: #f8f9fa;">
+                        {% else %}
+                        <div class="bg-light d-flex align-items-center justify-content-center rounded" style="height: 400px;">
+                            <i class="bi bi-image text-muted" style="font-size: 4rem;"></i>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Favorite Toggle -->
+                        <button class="btn position-absolute top-0 end-0 m-3 favorite-btn" 
+                                data-item-id="{{ item.item_id }}"
+                                data-is-favorite="{{ item.is_favorite|yesno:'true,false' }}">
+                            <i class="bi {% if item.is_favorite %}bi-heart-fill text-danger{% else %}bi-heart text-white{% endif %}"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Edit Form -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 pt-4 pb-3">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-pencil me-2 text-primary"></i>Edit Details
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="editItemForm">
+                        {% csrf_token %}
+                        
+                        <!-- Item Name -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Item Name</label>
+                            <input type="text" class="form-control" id="name" name="name" 
+                                   value="{{ item.name }}" required>
+                        </div>
+                        
+                        <!-- Category and Subcategory -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    {% for value, label in categories %}
+                                    <option value="{{ value }}" {% if item.category == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="subcategory" class="form-label">Subcategory</label>
+                                <input type="text" class="form-control" id="subcategory" name="subcategory" 
+                                       value="{{ item.subcategory }}" placeholder="e.g., t-shirt, jeans, sneakers">
+                            </div>
+                        </div>
+                        
+                        <!-- Colors -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="color" class="form-label">Primary Color</label>
+                                <select class="form-select" id="color" name="color" required>
+                                    {% for value, label in colors %}
+                                    <option value="{{ value }}" {% if item.color == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="secondary_color" class="form-label">Secondary Color</label>
+                                <select class="form-select" id="secondary_color" name="secondary_color">
+                                    <option value="">No secondary color</option>
+                                    {% for value, label in colors %}
+                                    <option value="{{ value }}" {% if item.secondary_color == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Season and Brand -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="season" class="form-label">Season</label>
+                                <select class="form-select" id="season" name="season" required>
+                                    {% for value, label in seasons %}
+                                    <option value="{{ value }}" {% if item.season == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="brand" class="form-label">Brand</label>
+                                <input type="text" class="form-control" id="brand" name="brand" 
+                                       value="{{ item.brand }}" placeholder="e.g., Nike, Zara, H&M">
+                            </div>
+                        </div>
+                        
+                        <!-- AI Description -->
+                        <div class="mb-3">
+                            <label for="cv_description" class="form-label">AI Description</label>
+                            <textarea class="form-control" id="cv_description" name="cv_description" 
+                                      rows="3" placeholder="AI-generated description of the item">{{ item.cv_description }}</textarea>
+                            <small class="text-muted">This description was generated by AI and can be edited.</small>
+                        </div>
+                        
+                        <!-- Tags -->
+                        <div class="mb-4">
+                            <label for="tags" class="form-label">Tags</label>
+                            <input type="text" class="form-control" id="tags" name="tags" 
+                                   value="{% for tag in item.tags.all %}{% if tag.source == 'user' %}{{ tag.tag }}{% if not forloop.last %}, {% endif %}{% endif %}{% endfor %}"
+                                   placeholder="e.g., casual, comfortable, trendy">
+                            <small class="text-muted">Separate multiple tags with commas.</small>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-fill">
+                                <i class="bi bi-check-lg me-1"></i>Save Changes
+                            </button>
+                            <a href="{% url 'item_detail' item.item_id %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-lg me-1"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.favorite-btn {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.favorite-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+    color: white;
+}
+
+.favorite-btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+    color: white;
+}
+
+.favorite-btn.favorited {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.favorite-btn.favorited:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Favorite toggle functionality
+    const favoriteBtn = document.querySelector('.favorite-btn');
+    if (favoriteBtn) {
+        favoriteBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const itemId = this.dataset.itemId;
+            const isFavorite = this.dataset.isFavorite === 'true';
+            
+            try {
+                const response = await fetch(`/wardrobe/item/${itemId}/toggle-favorite/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const icon = this.querySelector('i');
+                    
+                    if (data.is_favorite) {
+                        icon.className = 'bi bi-heart-fill text-danger';
+                        this.classList.add('favorited');
+                        this.dataset.isFavorite = 'true';
+                    } else {
+                        icon.className = 'bi bi-heart text-white';
+                        this.classList.remove('favorited');
+                        this.dataset.isFavorite = 'false';
+                    }
+                    
+                    // Show success message
+                    if (typeof AIStylist !== 'undefined' && AIStylist.ui) {
+                        AIStylist.ui.showToast(data.message, 'success');
+                    }
+                } else {
+                    throw new Error(data.message || 'Failed to update favorite status');
+                }
+            } catch (error) {
+                console.error('Error toggling favorite:', error);
+                if (typeof AIStylist !== 'undefined' && AIStylist.ui) {
+                    AIStylist.ui.showToast('Failed to update favorite status', 'error');
+                }
+            }
+        });
+    }
+    
+    // Form validation
+    const form = document.getElementById('editItemForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value.trim();
+            if (!name) {
+                e.preventDefault();
+                alert('Please enter an item name.');
+                return false;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

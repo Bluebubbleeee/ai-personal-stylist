@@ -1,0 +1,660 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Style Me - AI Stylist{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="text-center mb-4">
+                <div class="style-me-icon mb-3">
+                    <i class="bi bi-magic display-4 text-primary"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-gradient mb-2">Style Me</h1>
+                <p class="lead text-muted">Get AI-powered outfit recommendations tailored just for you</p>
+                <div class="preferences-indicator">
+                    <small class="text-muted">
+                        <i class="bi bi-person-check me-1"></i>
+                        Recommendations will be personalized based on your style preferences
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if not recommendations %}
+    <!-- Style Me Form -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-4">
+                    <form method="post" id="styleMeForm">
+                        {% csrf_token %}
+                        
+                        <!-- Occasion Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold mb-3">
+                                <i class="bi bi-calendar-event me-2 text-primary"></i>What's the occasion?
+                            </label>
+                            <div class="row g-3">
+                                {% for occasion in occasion_choices %}
+                                <div class="col-md-4 col-sm-6">
+                                    <input type="radio" class="btn-check" name="occasion" id="occasion_{{ occasion }}" value="{{ occasion }}" {% if forloop.first %}checked{% endif %}>
+                                    <label class="btn btn-outline-primary w-100 py-3" for="occasion_{{ occasion }}">
+                                        <i class="bi bi-{% if occasion == 'work' %}briefcase{% elif occasion == 'formal' %}suit-diamond{% elif occasion == 'party' %}balloon-heart{% elif occasion == 'date' %}heart{% elif occasion == 'casual' %}house{% elif occasion == 'sports' %}bicycle{% else %}star{% endif %} d-block fs-4 mb-2"></i>
+                                        {{ occasion|capfirst }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <!-- Custom Prompt -->
+                        <div class="mb-4">
+                            <label for="custom_prompt" class="form-label fw-semibold">
+                                <i class="bi bi-chat-quote me-2 text-primary"></i>Tell me more about your style preferences
+                                <small class="text-muted">(Optional)</small>
+                            </label>
+                            <textarea class="form-control" 
+                                      id="custom_prompt" 
+                                      name="custom_prompt" 
+                                      rows="3" 
+                                      placeholder="e.g., I love bold colors, prefer comfortable fits, need something that works with my favorite sneakers...">{{ request.POST.custom_prompt }}</textarea>
+                        </div>
+                        
+                        <!-- Weather Consideration -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <label class="form-label fw-semibold mb-0">
+                                    <i class="bi bi-cloud-sun me-2 text-primary"></i>Consider weather in recommendations?
+                                </label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="weather_consideration" name="weather_consideration" value="true" checked>
+                                    <label class="form-check-label" for="weather_consideration">Yes</label>
+                                </div>
+                            </div>
+                            
+                            <div id="locationSection">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    <strong>Automatic Location Detection</strong><br>
+                                    We'll automatically detect your location to provide weather-appropriate recommendations. 
+                                    <span id="locationStatus" class="text-muted">Click "Generate My Outfits" to enable location access.</span>
+                                </div>
+                                <input type="hidden" id="location" name="location" value="">
+                            </div>
+                        </div>
+                        
+                        <!-- Wardrobe Stats -->
+                        {% if wardrobe_stats.total_items > 0 %}
+                        <div class="mb-4">
+                            <h6 class="fw-semibold text-muted mb-3">
+                                <i class="bi bi-bag me-2"></i>Your Wardrobe Overview
+                            </h6>
+                            <div class="row g-2">
+                                <div class="col-auto">
+                                    <span class="badge bg-light text-dark fs-6 py-2 px-3">
+                                        <i class="bi bi-collection me-1"></i>{{ wardrobe_stats.total_items }} items
+                                    </span>
+                                </div>
+                                {% for category, info in wardrobe_stats.categories.items %}
+                                <div class="col-auto">
+                                    <span class="badge bg-outline-primary fs-6 py-2 px-3">
+                                        {{ info.count }} {{ info.label }}{{ info.count|pluralize }}
+                                    </span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Upload some clothes first!</strong> 
+                            You need items in your wardrobe before I can create outfit recommendations. 
+                            <a href="{% url 'wardrobe_upload' %}" class="alert-link">Add clothes now</a>.
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" 
+                                    class="btn btn-primary btn-lg px-5 py-3" 
+                                    id="generateBtn"
+                                    {% if wardrobe_stats.total_items == 0 %}disabled{% endif %}>
+                                <span class="btn-text">
+                                    <i class="bi bi-magic me-2"></i>Generate My Outfits
+                                </span>
+                                <span class="btn-spinner d-none">
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                    Creating magic...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Recommendations Display -->
+    {% if recommendations %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h3 class="fw-bold mb-1">
+                        <i class="bi bi-stars me-2 text-primary"></i>Your Personalized Outfits
+                    </h3>
+                    <p class="text-muted mb-0">{{ recommendations|length }} outfit{{ recommendations|length|pluralize }} created for {{ session.occasion }}</p>
+                </div>
+                <a href="{% url 'style_me' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-clockwise me-1"></i>Try Again
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        {% for recommendation in recommendations %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <a href="{% url 'suggestion_detail' recommendation.suggestion_id %}" class="text-decoration-none">
+                <div class="card recommendation-card h-100 border-0 shadow-sm">
+                <!-- Outfit Images -->
+                <div class="card-img-top outfit-showcase p-3">
+                    <div class="row g-2">
+                        {% for item in recommendation.get_clothing_items|slice:":4" %}
+                        <div class="col-6">
+                            <div class="outfit-item-image">
+                                {% if item.thumbnail %}
+                                <img src="{{ item.thumbnail.url }}" 
+                                     class="img-fluid rounded outfit-item-img" 
+                                     alt="{{ item.name }}"
+                                     title="{{ item.name }}">
+                                {% elif item.image %}
+                                <img src="{{ item.image.url }}" 
+                                     class="img-fluid rounded outfit-item-img" 
+                                     alt="{{ item.name }}"
+                                     title="{{ item.name }}">
+                                {% else %}
+                                <div class="placeholder-image bg-light rounded d-flex align-items-center justify-content-center outfit-item-img">
+                                    <i class="bi bi-image text-muted"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Confidence Badge -->
+                    <div class="confidence-badge">
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle me-1"></i>
+                            AI Recommended
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Recommendation Details -->
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="fw-semibold mb-2">AI Stylist Says:</h6>
+                        <div class="ai-rationale-container">
+                            <div class="ai-rationale-text" id="rationale-{{ recommendation.suggestion_id }}">
+                                <p class="text-muted small mb-0">{{ recommendation.ai_rationale|truncatewords:20 }}</p>
+                            </div>
+                            <div class="ai-rationale-full d-none" id="rationale-full-{{ recommendation.suggestion_id }}">
+                                <p class="text-muted small mb-0">{{ recommendation.ai_rationale }}</p>
+                            </div>
+                            {% if recommendation.ai_rationale|length > 100 %}
+                            <button class="btn btn-link btn-sm p-0 mt-1 toggle-rationale" 
+                                    data-target="rationale-{{ recommendation.suggestion_id }}"
+                                    data-full="rationale-full-{{ recommendation.suggestion_id }}">
+                                <span class="show-more">Show more <i class="bi bi-chevron-down"></i></span>
+                                <span class="show-less d-none">Show less <i class="bi bi-chevron-up"></i></span>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Items List -->
+                    <div class="mb-3">
+                        <h6 class="fw-semibold mb-2">
+                            <i class="bi bi-collection me-1"></i>Items ({{ recommendation.get_clothing_items.count }})
+                        </h6>
+                        <div class="item-list">
+                            {% for item in recommendation.get_clothing_items %}
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="item-color-dot me-2" 
+                                     style="background-color: {% if item.color == 'red' %}#dc3545{% elif item.color == 'blue' %}#0d6efd{% elif item.color == 'green' %}#198754{% elif item.color == 'black' %}#212529{% elif item.color == 'white' %}#f8f9fa{% else %}#6c757d{% endif %}; width: 12px; height: 12px; border-radius: 50%; border: 1px solid #dee2e6;"></div>
+                                <span class="small">{{ item.name }}</span>
+                                {% if item.is_favorite %}
+                                <i class="bi bi-heart-fill text-danger ms-auto small"></i>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Weather Context -->
+                    {% if recommendation.weather %}
+                    <div class="weather-context mb-3">
+                        <small class="text-muted">
+                            <i class="bi bi-cloud-sun me-1"></i>
+                            Perfect for {{ recommendation.weather.current.condition.text|capfirst }} weather ({{ recommendation.weather.current.temp_c }}°C)
+                        </small>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Recent Suggestions -->
+    {% if recent_suggestions and not recommendations %}
+    <div class="row">
+        <div class="col-12">
+            <h4 class="fw-bold mb-3">
+                <i class="bi bi-clock-history me-2 text-primary"></i>Recent Suggestions
+            </h4>
+        </div>
+        
+        {% for suggestion in recent_suggestions %}
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-3">
+            <a href="{% url 'suggestion_detail' suggestion.suggestion_id %}" class="text-decoration-none">
+                <div class="card recent-suggestion-card h-100 border-0 shadow-sm suggestion-card-clickable">
+                    <div class="card-body p-2">
+                        <div class="suggestion-preview mb-2">
+                            {% for item in suggestion.get_clothing_items|slice:":3" %}
+                            {% if item.thumbnail %}
+                            <div class="suggestion-thumb-container">
+                                <img src="{{ item.thumbnail.url }}" 
+                                     class="suggestion-thumb" 
+                                     alt="{{ item.name }}"
+                                     title="{{ item.name }}">
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% if suggestion.get_clothing_items|length > 3 %}
+                            <div class="suggestion-thumb-container more-items">
+                                <span class="more-count">+{{ suggestion.get_clothing_items|length|add:"-3" }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <small class="text-muted">{{ suggestion.prompt|truncatechars:20 }}</small><br>
+                        <small class="text-muted">{{ suggestion.created_at|date:"M j" }}</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.style-me-icon i {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #6f42c1 0%, #007bff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.btn-check:checked + .btn-outline-primary {
+    background: var(--primary-gradient);
+    border-color: var(--primary-color);
+    color: white;
+    transform: scale(1.02);
+}
+
+.recommendation-card {
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.recommendation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(37, 99, 235, 0.15) !important;
+}
+
+/* Hover effects removed */
+
+.outfit-showcase {
+    background: linear-gradient(135deg, #f8f9ff 0%, #e9ecff 100%);
+    position: relative;
+}
+
+.outfit-item-image {
+    height: 80px;
+    overflow: hidden;
+    border-radius: 0.375rem;
+}
+
+.outfit-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder-image {
+    height: 80px;
+}
+
+.confidence-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.item-color-dot {
+    flex-shrink: 0;
+}
+
+.recent-suggestion-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hover effects removed */
+
+.suggestion-card-clickable {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hover effects removed */
+
+.outfit-item-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.outfit-showcase {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.ai-rationale-container {
+    position: relative;
+}
+
+.toggle-rationale {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.toggle-rationale:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.ai-rationale-text p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.ai-rationale-full p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.suggestion-preview {
+    display: flex;
+    gap: 2px;
+    height: 60px;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    padding: 2px;
+}
+
+.suggestion-thumb-container {
+    flex: 1;
+    height: 100%;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.suggestion-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0.25rem;
+}
+
+.suggestion-thumb-container.more-items {
+    background-color: #e2e8f0;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.more-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.weather-context {
+    background: rgba(13, 202, 240, 0.1);
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    border-left: 3px solid #0dcaf0;
+}
+
+#locationSection {
+    transition: opacity 0.3s ease;
+}
+
+#locationSection.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .outfit-item-image {
+        height: 60px;
+    }
+    
+    .recommendation-card {
+        margin-bottom: 1rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('styleMeForm');
+    const generateBtn = document.getElementById('generateBtn');
+    const weatherToggle = document.getElementById('weather_consideration');
+    const locationSection = document.getElementById('locationSection');
+    
+    // Weather consideration toggle
+    if (weatherToggle && locationSection) {
+        weatherToggle.addEventListener('change', function() {
+            if (this.checked) {
+                locationSection.classList.remove('disabled');
+            } else {
+                locationSection.classList.add('disabled');
+            }
+        });
+    }
+    
+    // Form submission
+    if (form && generateBtn) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            // Check if weather consideration is enabled
+            const weatherToggle = document.getElementById('weather_consideration');
+            const locationInput = document.getElementById('location');
+            const locationStatus = document.getElementById('locationStatus');
+            
+            if (weatherToggle && weatherToggle.checked) {
+                // Get user's location automatically
+                getCurrentLocation()
+                    .then(location => {
+                        locationInput.value = location;
+                        locationStatus.textContent = `Location detected: ${location}`;
+                        locationStatus.className = 'text-success';
+                        submitForm();
+                    })
+                    .catch(error => {
+                        console.warn('Location access denied or failed:', error);
+                        locationStatus.textContent = 'Location access denied. Recommendations will be generated without weather consideration.';
+                        locationStatus.className = 'text-warning';
+                        locationInput.value = '';
+                        submitForm();
+                    });
+            } else {
+                // No weather consideration needed
+                submitForm();
+            }
+        });
+    }
+    
+    function getCurrentLocation() {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                reject(new Error('Geolocation not supported'));
+                return;
+            }
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    resolve(`${lat},${lon}`);
+                },
+                function(error) {
+                    let errorMessage = 'Location access denied';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage = 'Location access denied by user';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage = 'Location information unavailable';
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage = 'Location request timed out';
+                            break;
+                    }
+                    reject(new Error(errorMessage));
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+            );
+        });
+    }
+    
+    function submitForm() {
+        // Show loading state
+        const btnText = generateBtn.querySelector('.btn-text');
+        const btnSpinner = generateBtn.querySelector('.btn-spinner');
+        
+        btnText.classList.add('d-none');
+        btnSpinner.classList.remove('d-none');
+        generateBtn.disabled = true;
+        
+        // Add subtle loading animation to the page
+        document.body.style.cursor = 'wait';
+        
+        // Submit the form
+        form.submit();
+    }
+    
+    // Toggle rationale functionality
+    document.querySelectorAll('.toggle-rationale').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetId = this.dataset.target;
+            const fullId = this.dataset.full;
+            const target = document.getElementById(targetId);
+            const full = document.getElementById(fullId);
+            const showMore = this.querySelector('.show-more');
+            const showLess = this.querySelector('.show-less');
+            
+            if (target.classList.contains('d-none')) {
+                // Show truncated
+                target.classList.remove('d-none');
+                full.classList.add('d-none');
+                showMore.classList.remove('d-none');
+                showLess.classList.add('d-none');
+            } else {
+                // Show full
+                target.classList.add('d-none');
+                full.classList.remove('d-none');
+                showMore.classList.add('d-none');
+                showLess.classList.remove('d-none');
+            }
+        });
+    });
+    
+    
+    // Prevent card clicks when clicking on interactive elements
+    document.querySelectorAll('.recommendation-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Don't navigate if clicking on buttons or interactive elements
+            if (e.target.closest('.btn, .toggle-rationale')) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        });
+    });
+    
+    // Animate recommendation cards on load
+    const recommendationCards = document.querySelectorAll('.recommendation-card');
+    recommendationCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+    
+    // Reset cursor after page loads
+    setTimeout(() => {
+        document.body.style.cursor = 'default';
+    }, 1000);
+});
+</script>
+{% endblock %}

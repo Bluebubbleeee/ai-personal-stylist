@@ -1,0 +1,611 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Upload Clothing - AI Stylist{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h2 mb-1">Add New Clothing Item</h1>
+                    <p class="text-muted mb-0">Upload photos and let AI tag your items automatically</p>
+                </div>
+                <a href="{% url 'wardrobe' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Wardrobe
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data" id="uploadForm" novalidate>
+                        {% csrf_token %}
+                        <input type="hidden" id="cv_description" name="cv_description" value="">
+                        
+                        <!-- Image Upload Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold mb-3">
+                                <i class="bi bi-camera me-1 text-primary"></i>Item Photo
+                            </label>
+                            
+                            <!-- Drag & Drop Area -->
+                            <div class="upload-zone" id="uploadZone">
+                                <div class="text-center py-5">
+                                    <div class="upload-icon mb-3">
+                                        <i class="bi bi-cloud-upload display-4 text-primary"></i>
+                                    </div>
+                                    <h5 class="mb-2">Drag & drop your image here</h5>
+                                    <p class="text-muted mb-3">or click to browse files</p>
+                                    <button type="button" class="btn btn-primary" id="browseBtn">
+                                        <i class="bi bi-folder2-open me-2"></i>Choose File
+                                    </button>
+                                    <input type="file" 
+                                           id="imageInput" 
+                                           name="image" 
+                                           accept="image/jpeg,image/png,image/webp" 
+                                           style="display: none;" 
+                                           required>
+                                </div>
+                                
+                                <!-- Image Preview -->
+                                <div id="imagePreview" class="image-preview d-none">
+                                    <img id="previewImg" src="" alt="Preview" class="img-fluid rounded">
+                                    <div class="preview-overlay">
+                                        <button type="button" class="btn btn-sm btn-outline-light" id="changeImageBtn">
+                                            <i class="bi bi-camera"></i> Change Image
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <small class="form-text text-muted mt-2">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Supported formats: JPEG, PNG, WebP. Maximum size: 10MB.
+                            </small>
+                        </div>
+                        
+                        <!-- Item Details -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label fw-semibold">
+                                    <i class="bi bi-tag me-1"></i>Item Name
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="name" 
+                                       name="name" 
+                                       placeholder="e.g., Blue Denim Jacket"
+                                       required>
+                                <div class="invalid-feedback">Please provide a name for your item.</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="category" class="form-label fw-semibold">
+                                    <i class="bi bi-grid me-1"></i>Category
+                                </label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="">Select category</option>
+                                    {% for value, label in categories %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">Please select a category.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="color" class="form-label fw-semibold">
+                                    <i class="bi bi-palette me-1"></i>Primary Color
+                                </label>
+                                <select class="form-select" id="color" name="color" required>
+                                    <option value="">Select color</option>
+                                    {% for value, label in colors %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">Please select a color.</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="secondary_color" class="form-label fw-semibold">
+                                    <i class="bi bi-palette2 me-1"></i>Secondary Color
+                                    <small class="text-muted">(Optional)</small>
+                                </label>
+                                <select class="form-select" id="secondary_color" name="secondary_color">
+                                    <option value="">No secondary color</option>
+                                    {% for value, label in colors %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="brand" class="form-label fw-semibold">
+                                    <i class="bi bi-award me-1"></i>Brand
+                                    <small class="text-muted">(Optional)</small>
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="brand" 
+                                       name="brand" 
+                                       placeholder="e.g., Nike, Zara, H&M">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="season" class="form-label fw-semibold">
+                                    <i class="bi bi-thermometer-half me-1"></i>Season
+                                </label>
+                                <select class="form-select" id="season" name="season">
+                                    {% for value, label in seasons %}
+                                    <option value="{{ value }}" {% if value == 'all_season' %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Tags -->
+                        <div class="mb-3">
+                            <label for="tags" class="form-label fw-semibold">
+                                <i class="bi bi-tags me-1"></i>Tags
+                                <small class="text-muted">(Optional)</small>
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="tags" 
+                                   name="tags" 
+                                   placeholder="casual, work, formal, summer (comma-separated)">
+                            <small class="form-text text-muted">
+                                Add custom tags to help organize your wardrobe. AI will also add tags automatically.
+                            </small>
+                        </div>
+                        
+                        <!-- Additional Info -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="price" class="form-label fw-semibold">
+                                    <i class="bi bi-currency-dollar me-1"></i>Price
+                                    <small class="text-muted">(Optional)</small>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="price" 
+                                           name="price" 
+                                           step="0.01" 
+                                           min="0" 
+                                           placeholder="0.00">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="purchase_date" class="form-label fw-semibold">
+                                    <i class="bi bi-calendar3 me-1"></i>Purchase Date
+                                    <small class="text-muted">(Optional)</small>
+                                </label>
+                                <input type="date" 
+                                       class="form-control" 
+                                       id="purchase_date" 
+                                       name="purchase_date">
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-end gap-3 pt-3">
+                            <a href="{% url 'wardrobe' %}" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                <span class="btn-text">
+                                    <i class="bi bi-cloud-upload me-2"></i>Add to Wardrobe
+                                </span>
+                                <span class="btn-spinner d-none">
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                    Uploading...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.upload-zone {
+    border: 2px dashed #dee2e6;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    min-height: 300px;
+}
+
+.upload-zone:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(111, 66, 193, 0.05);
+}
+
+.upload-zone.dragover {
+    border-color: var(--primary-color);
+    background-color: rgba(111, 66, 193, 0.1);
+    transform: scale(1.02);
+}
+
+.image-preview {
+    position: relative;
+    text-align: center;
+}
+
+.image-preview img {
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.preview-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.upload-icon i {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+}
+
+.invalid-feedback {
+    display: block;
+}
+
+.was-validated .form-control:invalid,
+.was-validated .form-select:invalid {
+    border-color: var(--danger-color);
+}
+
+.was-validated .form-control:valid,
+.was-validated .form-select:valid {
+    border-color: var(--success-color);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadZone = document.getElementById('uploadZone');
+    const imageInput = document.getElementById('imageInput');
+    const browseBtn = document.getElementById('browseBtn');
+    const changeImageBtn = document.getElementById('changeImageBtn');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    const form = document.getElementById('uploadForm');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // File input handling
+    browseBtn.addEventListener('click', () => imageInput.click());
+    changeImageBtn.addEventListener('click', () => imageInput.click());
+    
+    // Drag and drop functionality
+    uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+    });
+    
+    uploadZone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+    });
+    
+    uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && files[0].type.startsWith('image/')) {
+            handleFileSelect(files[0]);
+        }
+    });
+    
+    // File input change
+    imageInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            handleFileSelect(this.files[0]);
+        }
+    });
+    
+    function handleFileSelect(file) {
+        // Validate file
+        if (!file.type.match(/^image\/(jpeg|png|webp)$/)) {
+            AIStylist.ui.showToast('Please select a valid image file (JPEG, PNG, WebP)', 'warning');
+            return;
+        }
+        
+        if (file.size > 10 * 1024 * 1024) {
+            AIStylist.ui.showToast('File size must be less than 10MB', 'warning');
+            return;
+        }
+        
+        // Create preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            uploadZone.querySelector('.text-center').classList.add('d-none');
+            imagePreview.classList.remove('d-none');
+        };
+        reader.readAsDataURL(file);
+        
+        // Set the file to input
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        imageInput.files = dataTransfer.files;
+        
+        // Immediately send image to OpenAI Vision API for analysis
+        analyzeImageWithOpenAI(file);
+    }
+    
+    function analyzeImageWithOpenAI(imageFile) {
+        // Show loading state
+        showAnalysisLoading();
+        
+        // Create FormData for file upload
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        
+        // Make API call to OpenAI Vision
+        fetch('/wardrobe/api/analyze-image-openai/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success && data.data) {
+                // Guard: Only populate if item is a dress
+                if (typeof data.data.is_dress !== 'undefined' && data.data.is_dress === true) {
+                    populateFormFields(data.data);
+                    hideAnalysisLoading();
+                    AIStylist.ui.showToast('Image analyzed successfully! Review and edit the details below.', 'success');
+                } else {
+                    hideAnalysisLoading();
+                    AIStylist.ui.showToast("It is not a dress you uploaded, or we couldn't identify the item.", 'warning');
+                }
+            } else {
+                throw new Error(data.error || 'Analysis failed');
+            }
+        })
+        .catch(error => {
+            console.error('OpenAI Vision API Error:', error);
+            hideAnalysisLoading();
+            AIStylist.ui.showToast(`Analysis failed: ${error.message}`, 'error');
+        });
+    }
+    
+    function showAnalysisLoading() {
+        // Add loading overlay to upload zone
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.id = 'analysisLoading';
+        loadingOverlay.className = 'position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center';
+        loadingOverlay.style.cssText = 'background: rgba(255,255,255,0.9); z-index: 10;';
+        loadingOverlay.innerHTML = `
+            <div class="text-center">
+                <div class="spinner-border text-primary mb-2"></div>
+                <div class="text-muted">Analyzing image with AI...</div>
+            </div>
+        `;
+        uploadZone.style.position = 'relative';
+        uploadZone.appendChild(loadingOverlay);
+    }
+    
+    function hideAnalysisLoading() {
+        const loadingOverlay = document.getElementById('analysisLoading');
+        if (loadingOverlay) {
+            loadingOverlay.remove();
+        }
+    }
+    
+    function populateFormFields(analysisData) {
+        // Populate form fields with analyzed data
+        // Only populate if fields are empty or contain default values
+        
+        // Name field
+        const nameField = document.getElementById('name');
+        if (!nameField.value || nameField.value.trim() === '') {
+            nameField.value = analysisData.name || '';
+        }
+        
+        // Category field
+        const categoryField = document.getElementById('category');
+        if (!categoryField.value) {
+            if (analysisData.category) {
+                // Enhanced category mapping for more detailed clothing types
+                const categoryMapping = {
+                    'tops': 'tops',
+                    'bottoms': 'bottoms', 
+                    'dresses': 'dresses',
+                    'outerwear': 'outerwear',
+                    'shoes': 'shoes',
+                    'accessories': 'accessories',
+                    'underwear': 'underwear',
+                    'activewear': 'activewear',
+                    'formal': 'formal',
+                    'sleepwear': 'sleepwear'
+                };
+                const mappedCategory = categoryMapping[analysisData.category.toLowerCase()] || 'other';
+                categoryField.value = mappedCategory;
+            }
+        }
+        
+        // Color field
+        const colorField = document.getElementById('color');
+        if (!colorField.value) {
+            if (analysisData.color) {
+                // Map analysis color to form options
+                const colorMapping = {
+                    'black': 'black',
+                    'white': 'white',
+                    'red': 'red',
+                    'blue': 'blue',
+                    'green': 'green',
+                    'yellow': 'yellow',
+                    'orange': 'orange',
+                    'purple': 'purple',
+                    'pink': 'pink',
+                    'brown': 'brown',
+                    'gray': 'gray',
+                    'navy': 'navy',
+                    'beige': 'beige',
+                    'cream': 'cream'
+                };
+                const mappedColor = colorMapping[analysisData.color.toLowerCase()] || 'other';
+                colorField.value = mappedColor;
+            }
+        }
+        
+        // Secondary color field
+        const secondaryColorField = document.getElementById('secondary_color');
+        if (!secondaryColorField.value && analysisData.secondary_color) {
+            const colorMapping = {
+                'black': 'black',
+                'white': 'white',
+                'red': 'red',
+                'blue': 'blue',
+                'green': 'green',
+                'yellow': 'yellow',
+                'orange': 'orange',
+                'purple': 'purple',
+                'pink': 'pink',
+                'brown': 'brown',
+                'gray': 'gray',
+                'navy': 'navy',
+                'beige': 'beige',
+                'cream': 'cream'
+            };
+            const mappedSecondaryColor = colorMapping[analysisData.secondary_color.toLowerCase()] || '';
+            secondaryColorField.value = mappedSecondaryColor;
+        }
+        
+        // Brand field
+        const brandField = document.getElementById('brand');
+        if (!brandField.value && analysisData.brand) {
+            brandField.value = analysisData.brand;
+        }
+        
+        // Season field
+        const seasonField = document.getElementById('season');
+        if (!seasonField.value || seasonField.value === 'all_season') {
+            if (analysisData.season) {
+                const seasonMapping = {
+                    'spring': 'spring',
+                    'summer': 'summer',
+                    'fall': 'fall',
+                    'autumn': 'fall',
+                    'winter': 'winter',
+                    'all_season': 'all_season'
+                };
+                const mappedSeason = seasonMapping[analysisData.season.toLowerCase()] || 'all_season';
+                seasonField.value = mappedSeason;
+            }
+        }
+        
+        // Tags field
+        const tagsField = document.getElementById('tags');
+        if (!tagsField.value && analysisData.tags && Array.isArray(analysisData.tags)) {
+            tagsField.value = analysisData.tags.join(', ');
+        }
+        
+        // Save hidden description (not shown to user)
+        if (analysisData.description) {
+            document.getElementById('cv_description').value = analysisData.description;
+        }
+
+        // Trigger name update based on category and color
+        updateItemName();
+    }
+    
+    // Form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!AIStylist.forms.validate(this)) {
+            AIStylist.ui.showToast('Please fill in all required fields', 'warning');
+            return;
+        }
+        
+        // Show loading state
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnSpinner = submitBtn.querySelector('.btn-spinner');
+        
+        btnText.classList.add('d-none');
+        btnSpinner.classList.remove('d-none');
+        submitBtn.disabled = true;
+        
+        // Submit form
+        this.submit();
+    });
+    
+    // Auto-generate name based on category and color
+    const categorySelect = document.getElementById('category');
+    const colorSelect = document.getElementById('color');
+    const nameInput = document.getElementById('name');
+    
+    function updateItemName() {
+        if (nameInput.value.trim() === '' || nameInput.value === 'New Item') {
+            const category = categorySelect.options[categorySelect.selectedIndex]?.text || '';
+            const color = colorSelect.options[colorSelect.selectedIndex]?.text || '';
+            
+            if (category && color) {
+                nameInput.value = `${color} ${category}`;
+            }
+        }
+    }
+    
+    categorySelect.addEventListener('change', updateItemName);
+    colorSelect.addEventListener('change', updateItemName);
+    
+    // Tag suggestions (placeholder for future enhancement)
+    const tagsInput = document.getElementById('tags');
+    tagsInput.addEventListener('input', function() {
+        // Future: Add tag autocomplete functionality
+    });
+});
+</script>
+{% endblock %}

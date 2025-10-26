@@ -1,0 +1,344 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Outfit Suggestion Details - AI Stylist{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="fw-bold mb-1">
+                        <i class="bi bi-stars me-2 text-primary"></i>Outfit Suggestion Details
+                    </h2>
+                    <p class="text-muted mb-0">Created {{ suggestion.created_at|date:"M j, Y" }} at {{ suggestion.created_at|time:"g:i A" }}</p>
+                </div>
+                <a href="{% url 'style_me' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Style Me
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Suggestion Details -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <!-- Outfit Images -->
+                <div class="card-img-top outfit-showcase p-4">
+                    <div class="row g-3">
+                        {% for item in suggestion.get_clothing_items %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="outfit-item-image">
+                                {% if item.thumbnail %}
+                                <img src="{{ item.thumbnail.url }}" 
+                                     class="img-fluid rounded outfit-detail-img" 
+                                     alt="{{ item.name }}"
+                                     title="{{ item.name }}"
+                                     data-full-image="{% if item.image %}{{ item.image.url }}{% else %}{{ item.thumbnail.url }}{% endif %}">
+                                {% elif item.image %}
+                                <img src="{{ item.image.url }}" 
+                                     class="img-fluid rounded outfit-detail-img" 
+                                     alt="{{ item.name }}"
+                                     title="{{ item.name }}"
+                                     data-full-image="{{ item.image.url }}">
+                                {% else %}
+                                <div class="placeholder-image bg-light rounded d-flex align-items-center justify-content-center outfit-detail-img">
+                                    <i class="bi bi-image text-muted fs-1"></i>
+                                </div>
+                                {% endif %}
+                                <div class="item-overlay">
+                                    <i class="bi bi-zoom-in text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- AI Recommended Badge -->
+                    <div class="confidence-badge mt-3">
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle me-1"></i>
+                            AI Recommended
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Suggestion Details -->
+                <div class="card-body">
+                    <!-- AI Stylist Says -->
+                    <div class="mb-4">
+                        <h5 class="fw-semibold mb-3">AI Stylist Says:</h5>
+                        <div class="ai-rationale p-3 bg-light rounded">
+                            <p class="mb-0">{{ suggestion.ai_rationale|linebreaks }}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Items List -->
+                    <div class="mb-4">
+                        <h5 class="fw-semibold mb-3">
+                            <i class="bi bi-collection me-2"></i>Items ({{ suggestion.get_clothing_items.count }})
+                        </h5>
+                        <div class="row g-3">
+                            {% for item in suggestion.get_clothing_items %}
+                            <div class="col-md-6">
+                                <div class="item-card p-3 border rounded">
+                                    <div class="d-flex align-items-center">
+                                        <div class="item-color-dot me-3" 
+                                             style="background-color: {% if item.color == 'red' %}#dc3545{% elif item.color == 'blue' %}#0d6efd{% elif item.color == 'green' %}#198754{% elif item.color == 'black' %}#212529{% elif item.color == 'white' %}#f8f9fa{% else %}#6c757d{% endif %}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid #dee2e6;"></div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">{{ item.name }}</h6>
+                                            <small class="text-muted">{{ item.category|capfirst }} • {{ item.color|capfirst }}</small>
+                                            {% if item.brand %}
+                                            <br><small class="text-muted">Brand: {{ item.brand }}</small>
+                                            {% endif %}
+                                        </div>
+                                        {% if item.is_favorite %}
+                                        <i class="bi bi-heart-fill text-danger"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <!-- Weather Context -->
+                    {% if suggestion.weather %}
+                    <div class="mb-4">
+                        <h5 class="fw-semibold mb-3">
+                            <i class="bi bi-cloud-sun me-2"></i>Weather Context
+                        </h5>
+                        <div class="weather-info p-3 bg-light rounded">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>Temperature:</strong> {{ suggestion.weather.current.temp_c }}°C
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Condition:</strong> {{ suggestion.weather.current.condition.text|capfirst }}
+                                </div>
+                            </div>
+                            {% if suggestion.location %}
+                            <div class="mt-2">
+                                <strong>Location:</strong> {{ suggestion.location }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Wardrobe Stats -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0">
+                        <i class="bi bi-bar-chart me-2"></i>Your Wardrobe
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <h3 class="fw-bold text-primary">{{ wardrobe_stats.total_items }}</h3>
+                        <p class="text-muted mb-0">Total Items</p>
+                    </div>
+                    
+                    {% if wardrobe_stats.categories %}
+                    <div class="category-breakdown">
+                        <h6 class="fw-semibold mb-3">Categories</h6>
+                        {% for category, data in wardrobe_stats.categories.items %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted">{{ data.label }}</span>
+                            <span class="badge bg-secondary">{{ data.count }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-lightning me-2"></i>Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'style_me' %}" class="btn btn-primary">
+                            <i class="bi bi-magic me-2"></i>Get New Recommendations
+                        </a>
+                        <a href="{% url 'wardrobe' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-collection me-2"></i>Manage Wardrobe
+                        </a>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-house me-2"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.outfit-showcase {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.outfit-item-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.outfit-detail-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+    background-color: #ffffff;
+}
+
+.item-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
+}
+
+.outfit-item-image:hover .item-overlay {
+    opacity: 1;
+}
+
+.outfit-item-image:hover .outfit-detail-img {
+    transform: scale(1.05);
+}
+
+/* Hover effects removed */
+
+.item-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effects removed */
+
+.ai-rationale {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.weather-info {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-radius: 8px;
+    padding: 1rem;
+    color: #1e40af;
+}
+
+.confidence-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.info-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #6f42c1 100%);
+    border: none;
+    color: white;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border: none;
+    color: white;
+    font-weight: 500;
+}
+
+/* Hover effects removed */
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Image zoom functionality
+    document.querySelectorAll('.outfit-item-image').forEach(container => {
+        container.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const img = this.querySelector('.outfit-detail-img');
+            if (img && img.dataset.fullImage) {
+                const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+                const modalImg = document.getElementById('modalImage');
+                modalImg.src = img.dataset.fullImage;
+                modalImg.alt = img.alt;
+                modal.show();
+            }
+        });
+    });
+});
+</script>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Item Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-0">
+                <img id="modalImage" class="img-fluid" style="max-height: 70vh; object-fit: contain;" alt="Item Image">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

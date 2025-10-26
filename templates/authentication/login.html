@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign In - AI Stylist{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center min-vh-100 align-items-center py-5">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <div class="auth-icon bg-primary bg-gradient text-white rounded-circle mx-auto mb-3" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-box-arrow-in-right fs-4"></i>
+                        </div>
+                        <h2 class="fw-bold text-dark">Welcome Back!</h2>
+                        <p class="text-muted">Sign in to your AI Stylist account</p>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form method="post" id="loginForm" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Email Field -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="bi bi-envelope me-1"></i>Email Address
+                            </label>
+                            <input type="email" 
+                                   class="form-control form-control-lg" 
+                                   id="email" 
+                                   name="email" 
+                                   placeholder="Enter your email address"
+                                   value="{{ request.POST.email|default:'' }}"
+                                   required>
+                            <div class="invalid-feedback">Please enter a valid email address.</div>
+                        </div>
+                        
+                        <!-- Password Field -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold">
+                                <i class="bi bi-lock me-1"></i>Password
+                            </label>
+                            <div class="position-relative">
+                                <input type="password" 
+                                       class="form-control form-control-lg" 
+                                       id="password" 
+                                       name="password" 
+                                       placeholder="Enter your password"
+                                       required>
+                                <button type="button" 
+                                        class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-muted"
+                                        id="togglePassword"
+                                        style="border: none; background: none;">
+                                    <i class="bi bi-eye" id="toggleIcon"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">Please enter your password.</div>
+                        </div>
+                        
+                        <!-- Remember Me & Forgot Password -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                                <label class="form-check-label text-muted" for="remember">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a href="/auth/password-reset/" class="text-primary text-decoration-none">
+                                Forgot password?
+                            </a>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-3" id="submitBtn">
+                            <span class="btn-text">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                            </span>
+                            <span class="btn-spinner d-none">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                Signing In...
+                            </span>
+                        </button>
+                        
+                        <!-- Register Link -->
+                        <div class="text-center">
+                            <p class="text-muted mb-0">
+                                Don't have an account? 
+                                <a href="{% url 'register' %}" class="text-primary text-decoration-none fw-semibold">Sign Up</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Account Activation Notice -->
+            {% if 'activation' in request.GET %}
+            <div class="alert alert-info mt-3 text-center">
+                <i class="bi bi-info-circle me-2"></i>
+                Please check your email and click the activation link to verify your account before signing in.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.auth-page {
+    background: linear-gradient(135deg, #f8f9ff 0%, #e9ecff 100%);
+}
+
+.auth-icon {
+    transition: all 0.3s ease;
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.form-control:focus {
+    border-color: #6f42c1;
+    box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6f42c1 0%, #007bff 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+}
+
+.form-check-input:checked {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+}
+
+.alert-info {
+    background-color: rgba(111, 66, 193, 0.1);
+    border-color: rgba(111, 66, 193, 0.2);
+    color: #6f42c1;
+    border-radius: 0.5rem;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnSpinner = submitBtn.querySelector('.btn-spinner');
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const emailField = document.getElementById('email');
+    
+    // Focus on email field
+    emailField.focus();
+    
+    // Toggle password visibility
+    togglePassword.addEventListener('click', function() {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        
+        if (type === 'text') {
+            toggleIcon.classList.replace('bi-eye', 'bi-eye-slash');
+        } else {
+            toggleIcon.classList.replace('bi-eye-slash', 'bi-eye');
+        }
+    });
+    
+    // Real-time validation
+    emailField.addEventListener('input', function() {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (this.value && emailRegex.test(this.value)) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        } else if (this.value) {
+            this.classList.remove('is-valid');
+            this.classList.add('is-invalid');
+        } else {
+            this.classList.remove('is-invalid', 'is-valid');
+        }
+    });
+    
+    passwordField.addEventListener('input', function() {
+        if (this.value.length > 0) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        } else {
+            this.classList.remove('is-invalid', 'is-valid');
+        }
+    });
+    
+    // Form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let isValid = true;
+        
+        // Validate email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailField.value || !emailRegex.test(emailField.value)) {
+            emailField.classList.add('is-invalid');
+            emailField.classList.remove('is-valid');
+            isValid = false;
+        } else {
+            emailField.classList.add('is-valid');
+            emailField.classList.remove('is-invalid');
+        }
+        
+        // Validate password
+        if (!passwordField.value) {
+            passwordField.classList.add('is-invalid');
+            passwordField.classList.remove('is-valid');
+            isValid = false;
+        } else {
+            passwordField.classList.add('is-valid');
+            passwordField.classList.remove('is-invalid');
+        }
+        
+        if (isValid) {
+            // Show loading state
+            btnText.classList.add('d-none');
+            btnSpinner.classList.remove('d-none');
+            submitBtn.disabled = true;
+            
+            // Submit form
+            this.submit();
+        } else {
+            // Shake the card on error
+            const card = document.querySelector('.card');
+            card.classList.add('shake');
+            setTimeout(() => {
+                card.classList.remove('shake');
+            }, 500);
+        }
+    });
+    
+    // Handle form errors
+    const hasErrors = {{ messages|length|default:0 }} > 0;
+    if (hasErrors) {
+        const card = document.querySelector('.card');
+        card.classList.add('shake');
+        setTimeout(() => {
+            card.classList.remove('shake');
+        }, 500);
+    }
+    
+    // Auto-hide alerts after 5 seconds
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            alert.style.opacity = '0';
+            setTimeout(() => {
+                alert.remove();
+            }, 300);
+        }, 5000);
+    });
+});
+</script>
+{% endblock %}

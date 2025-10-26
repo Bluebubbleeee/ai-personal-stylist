@@ -1,0 +1,484 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - AI Stylist{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h2 mb-1">Welcome back, {{ user.name }}!</h1>
+                    <p class="text-muted mb-0">Ready to discover your perfect style today?</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="/wardrobe/upload/" class="btn btn-outline-primary">
+                        <i class="bi bi-plus-lg me-1"></i>Add Clothes
+                    </a>
+                    <a href="/style-me/" class="btn btn-primary">
+                        <i class="bi bi-magic me-1"></i>Style Me
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm h-100 clickable-card" data-url="{% url 'wardrobe' %}">
+                <div class="card-body text-center">
+                    <div class="stat-icon bg-primary bg-gradient text-white rounded-circle mx-auto mb-3" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-bag fs-5"></i>
+                    </div>
+                    <h3 class="stat-number text-primary mb-1" data-count="{{ total_items }}">{{ total_items }}</h3>
+                    <p class="text-muted mb-0">Clothing Items</p>
+                    <small class="text-muted">Click to view wardrobe</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm h-100 clickable-card" data-url="{% url 'style_me' %}">
+                <div class="card-body text-center">
+                    <div class="stat-icon bg-success bg-gradient text-white rounded-circle mx-auto mb-3" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-magic fs-5"></i>
+                    </div>
+                    <h3 class="stat-number text-success mb-1" data-count="{{ outfits_created }}">{{ outfits_created }}</h3>
+                    <p class="text-muted mb-0">Outfits Created</p>
+                    <small class="text-muted">Click to create more</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm h-100 clickable-card" data-url="{% url 'wardrobe' %}?favorites=true">
+                <div class="card-body text-center">
+                    <div class="stat-icon bg-warning bg-gradient text-white rounded-circle mx-auto mb-3" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-heart fs-5"></i>
+                    </div>
+                    <h3 class="stat-number text-warning mb-1" data-count="{{ favorite_items }}">{{ favorite_items }}</h3>
+                    <p class="text-muted mb-0">Favorite Items</p>
+                    <small class="text-muted">Click to view favorites</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Quick Actions -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 pt-4 pb-3">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-lightning me-2 text-primary"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="list-group list-group-flush">
+                        <a href="/wardrobe/upload/" class="list-group-item list-group-item-action border-0 px-0 py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="action-icon bg-primary text-white rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1">Add New Clothes</h6>
+                                    <p class="text-muted mb-0 small">Upload photos of your clothing items</p>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="/style-me/" class="list-group-item list-group-item-action border-0 px-0 py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="action-icon bg-success text-white rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-magic"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1">Get Style Suggestions</h6>
+                                    <p class="text-muted mb-0 small">AI-powered outfit recommendations</p>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        
+                        <a href="/wardrobe/" class="list-group-item list-group-item-action border-0 px-0 py-3">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <div class="action-icon bg-warning text-white rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-collection"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1">Browse Wardrobe</h6>
+                                    <p class="text-muted mb-0 small">Explore your clothing collection</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 pt-4 pb-3">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-clock-history me-2 text-primary"></i>Recent Items
+                    </h5>
+                </div>
+                <div class="card-body pt-0">
+                    {% if recent_items %}
+                        <div class="list-group list-group-flush">
+                            {% for item in recent_items %}
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        {% if item.thumbnail %}
+                                            <img src="{{ item.thumbnail.url }}" class="rounded" style="width: 40px; height: 40px; object-fit: cover;" alt="{{ item.name }}">
+                                        {% else %}
+                                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="bi bi-image text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-1">{{ item.name }}</h6>
+                                        <p class="text-muted mb-0 small">{{ item.category|capfirst }} - {{ item.color|capfirst }}</p>
+                                    </div>
+                                    {% if item.is_favorite %}
+                                    <i class="bi bi-heart-fill text-danger"></i>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="{% url 'wardrobe' %}" class="btn btn-outline-primary btn-sm">View All Items</a>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <div class="empty-state-icon text-muted mb-3" style="font-size: 3rem;">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <p class="text-muted">No recent activity yet.</p>
+                            <p class="text-muted small">Start by adding some clothes to your wardrobe!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Weather & Style Tip -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 pt-4 pb-3">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-cloud-sun me-2 text-primary"></i>Today's Weather
+                    </h5>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="text-center mb-4" id="weather-info">
+                        <div class="weather-icon mb-2" style="font-size: 3rem;">
+                            <i class="bi bi-sun text-warning"></i>
+                        </div>
+                        <h4 class="mb-1">22°C</h4>
+                        <p class="text-muted mb-0">Sunny</p>
+                        <small class="text-muted">Location not set</small>
+                    </div>
+                    
+                    <div class="style-tip bg-light p-3 rounded">
+                        <h6 class="mb-2">
+                            <i class="bi bi-lightbulb me-1 text-warning"></i>Style Tip
+                        </h6>
+                        <p class="mb-0 small text-muted">Perfect weather for light, breathable fabrics. Consider wearing bright colors to match the sunny mood!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.stat-icon, .action-icon {
+    transition: all 0.3s ease;
+}
+
+/* Hover effects removed */
+
+/* Hover effects removed */
+
+.empty-state-icon {
+    opacity: 0.3;
+}
+
+.weather-icon {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+.style-tip {
+    border-left: 4px solid #ffc107;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.clickable-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clickable-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+@media (max-width: 768px) {
+    .stat-number {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate stats counter
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    const animateCounter = (element, target) => {
+        let current = 0;
+        const increment = target / 50;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current);
+        }, 20);
+    };
+    
+    // Intersection Observer for stats animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.dataset.count);
+                animateCounter(entry.target, target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    statNumbers.forEach(stat => observer.observe(stat));
+    
+    // Add click functionality to clickable cards
+    const clickableCards = document.querySelectorAll('.clickable-card');
+    clickableCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const url = this.getAttribute('data-url');
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    });
+    
+    // Load weather data with real API and geolocation
+    loadWeatherData();
+    
+    function loadWeatherData() {
+        const weatherInfo = document.getElementById('weather-info');
+        
+        // Check if geolocation is supported
+        if (!navigator.geolocation) {
+            weatherInfo.innerHTML = `
+                <div class="weather-icon mb-2" style="font-size: 3rem;">
+                    <i class="bi bi-exclamation-triangle text-warning"></i>
+                </div>
+                <h4 class="mb-1">Location Error</h4>
+                <p class="text-muted mb-0">Geolocation not supported</p>
+                <small class="text-muted">Cannot fetch weather data</small>
+            `;
+            return;
+        }
+        
+        // Show loading state
+        weatherInfo.innerHTML = `
+            <div class="weather-icon mb-2" style="font-size: 3rem;">
+                <i class="bi bi-hourglass-split text-primary"></i>
+            </div>
+            <h4 class="mb-1">Loading...</h4>
+            <p class="text-muted mb-0">Getting your location</p>
+            <small class="text-muted">Please allow location access</small>
+        `;
+        
+        // Request user's location
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                
+                // Fetch weather data using WeatherAPI
+                fetchWeatherData(lat, lon);
+            },
+            function(error) {
+                // Handle location access denied or error
+                let errorMessage = 'Location access required for weather';
+                if (error.code === error.PERMISSION_DENIED) {
+                    errorMessage = 'Location access denied';
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    errorMessage = 'Location unavailable';
+                } else if (error.code === error.TIMEOUT) {
+                    errorMessage = 'Location request timeout';
+                }
+                
+                weatherInfo.innerHTML = `
+                    <div class="weather-icon mb-2" style="font-size: 3rem;">
+                        <i class="bi bi-geo-alt text-muted"></i>
+                    </div>
+                    <h4 class="mb-1">Location Required</h4>
+                    <p class="text-muted mb-0">${errorMessage}</p>
+                    <small class="text-muted">Weather data unavailable</small>
+                `;
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 300000 // 5 minutes
+            }
+        );
+    }
+    
+    function fetchWeatherData(lat, lon) {
+        const weatherInfo = document.getElementById('weather-info');
+        
+        // Update loading state
+        weatherInfo.innerHTML = `
+            <div class="weather-icon mb-2" style="font-size: 3rem;">
+                <i class="bi bi-cloud-arrow-down text-info"></i>
+            </div>
+            <h4 class="mb-1">Loading...</h4>
+            <p class="text-muted mb-0">Fetching weather data</p>
+            <small class="text-muted">Please wait...</small>
+        `;
+        
+        // Make API call to WeatherAPI
+        const apiUrl = `/api/weather/?lat=${lat}&lon=${lon}`;
+        
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Extract weather data from API response
+                const temp = Math.round(data.current.temp_c);
+                const condition = data.current.condition.text;
+                const location = data.location.name;
+                const country = data.location.country;
+                
+                // Map weather conditions to Bootstrap icons
+                const iconMap = {
+                    'Sunny': 'bi-sun',
+                    'Clear': 'bi-sun',
+                    'Partly cloudy': 'bi-cloud-sun',
+                    'Cloudy': 'bi-cloud',
+                    'Overcast': 'bi-cloud',
+                    'Mist': 'bi-cloud-fog',
+                    'Fog': 'bi-cloud-fog',
+                    'Rain': 'bi-cloud-rain',
+                    'Light rain': 'bi-cloud-drizzle',
+                    'Heavy rain': 'bi-cloud-rain',
+                    'Thunderstorm': 'bi-cloud-lightning',
+                    'Snow': 'bi-snow',
+                    'Sleet': 'bi-cloud-snow'
+                };
+                
+                // Find best matching icon
+                let iconClass = 'bi-cloud';
+                for (const [key, value] of Object.entries(iconMap)) {
+                    if (condition.toLowerCase().includes(key.toLowerCase())) {
+                        iconClass = value;
+                        break;
+                    }
+                }
+                
+                // Update weather display
+                weatherInfo.innerHTML = `
+                    <div class="weather-icon mb-2" style="font-size: 3rem;">
+                        <i class="bi ${iconClass} text-warning"></i>
+                    </div>
+                    <h4 class="mb-1">${temp}°C</h4>
+                    <p class="text-muted mb-0">${condition}</p>
+                    <small class="text-muted">${location}, ${country}</small>
+                `;
+                
+                // Update style tip based on weather
+                updateStyleTip(temp, condition);
+            })
+            .catch(error => {
+                console.error('Weather API Error:', error);
+                
+                weatherInfo.innerHTML = `
+                    <div class="weather-icon mb-2" style="font-size: 3rem;">
+                        <i class="bi bi-exclamation-triangle text-danger"></i>
+                    </div>
+                    <h4 class="mb-1">Weather Error</h4>
+                    <p class="text-muted mb-0">${error.message}</p>
+                    <small class="text-muted">Unable to fetch weather data</small>
+                `;
+            });
+    }
+    
+    function updateStyleTip(temp, condition) {
+        const tips = {
+            'hot': 'Perfect weather for light, breathable fabrics and bright colors!',
+            'warm': 'Great for layered looks and medium-weight fabrics.',
+            'cool': 'Time for cozy sweaters and comfortable layers.',
+            'cold': 'Bundle up with warm coats and winter accessories!',
+            'rainy': 'Don\'t forget your umbrella and waterproof jacket!'
+        };
+        
+        let tipCategory;
+        if (temp > 25) tipCategory = 'hot';
+        else if (temp > 20) tipCategory = 'warm';
+        else if (temp > 15) tipCategory = 'cool';
+        else tipCategory = 'cold';
+        
+        if (condition === 'Rainy') tipCategory = 'rainy';
+        
+        const styleTip = document.querySelector('.style-tip p');
+        styleTip.textContent = tips[tipCategory];
+    }
+});
+</script>
+{% endblock %}

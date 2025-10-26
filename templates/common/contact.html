@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - AI Stylist{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold text-primary mb-3">
+                    <i class="bi bi-envelope me-3"></i>Contact Us
+                </h1>
+                <p class="lead text-muted">We'd love to hear from you! Get in touch with our team.</p>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="row mb-5">
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="bg-primary bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="bi bi-envelope fs-4"></i>
+                            </div>
+                            <h5 class="fw-semibold mb-2">Email Support</h5>
+                            <p class="text-muted mb-3">Get help with your account or technical issues</p>
+                            <a href="mailto:aistylist@support.com" class="btn btn-outline-primary">
+                                aistylist@support.com
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="bg-success bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="bi bi-telephone fs-4"></i>
+                            </div>
+                            <h5 class="fw-semibold mb-2">Phone Support</h5>
+                            <p class="text-muted mb-3">Speak with our support team directly</p>
+                            <a href="tel:+1-555-0123" class="btn btn-outline-success">
+                                +1 (555) 012-3456
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="bg-info bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <i class="bi bi-geo-alt fs-4"></i>
+                            </div>
+                            <h5 class="fw-semibold mb-2">Headquarters</h5>
+                            <p class="text-muted mb-3">Visit our main office</p>
+                            <address class="text-muted small">
+                                123 Fashion Avenue<br>
+                                Suite 456<br>
+                                New York, NY 10001<br>
+                                United States
+                            </address>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Hours -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold text-primary mb-4">
+                        <i class="bi bi-clock me-2"></i>Support Hours
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-semibold text-primary">Email Support</h6>
+                            <p class="text-muted mb-3">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Available 24/7<br>
+                                <small class="text-muted">We typically respond within 24 hours</small>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-semibold text-primary">Phone Support</h6>
+                            <p class="text-muted mb-3">
+                                <i class="bi bi-clock text-warning me-2"></i>
+                                Monday - Friday: 9:00 AM - 6:00 PM EST<br>
+                                <small class="text-muted">Saturday: 10:00 AM - 4:00 PM EST</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold text-primary mb-4">
+                        <i class="bi bi-question-circle me-2"></i>Frequently Asked Questions
+                    </h3>
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                    How does AI Stylist work?
+                                </button>
+                            </h2>
+                            <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    AI Stylist uses advanced computer vision to analyze your clothing items and machine learning algorithms to understand your style preferences. It then generates personalized outfit recommendations based on your wardrobe, weather conditions, and the occasion.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                    Is my data secure?
+                                </button>
+                            </h2>
+                            <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes, we take data security very seriously. All your personal information and wardrobe data are encrypted and stored securely. We never share your personal information with third parties without your explicit consent.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                    Can I use AI Stylist on mobile devices?
+                                </button>
+                            </h2>
+                            <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes! AI Stylist is fully responsive and works great on all devices including smartphones and tablets. You can access all features from your mobile browser.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faq4">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                    How accurate are the recommendations?
+                                </button>
+                            </h2>
+                            <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Our AI continuously learns from your preferences and feedback. The more you use AI Stylist, the more accurate the recommendations become. Most users see significant improvement in recommendation quality within the first few weeks of use.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold text-primary mb-4">
+                        <i class="bi bi-chat-dots me-2"></i>Send us a Message
+                    </h3>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <select class="form-select" id="subject" required>
+                                <option value="">Choose a subject</option>
+                                <option value="technical">Technical Support</option>
+                                <option value="account">Account Issues</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="feedback">General Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="5" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-send me-2"></i>Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
