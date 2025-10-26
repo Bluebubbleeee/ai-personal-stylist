@@ -41,15 +41,12 @@ pip install -r requirements.txt
 
 ### 4. Environment Configuration
 
-**Quick Setup (Recommended):**
-```bash
-python setup_env.py
-```
-
 **Manual Setup:**
 Create a `.env` file in the project root directory:
 ```bash
-cp env.example .env
+New-Item -Path .env -ItemType File #PowerShell (Windows)
+type nul > .env #CMD (Windows)
+touch .env #(Bash / Git Bash / Linux / macOS)
 ```
 
 Then edit `.env` with your actual API keys:
@@ -72,8 +69,6 @@ EMAIL_USE_TLS=True
 EMAIL_HOST_USER=your_email@gmail.com
 EMAIL_HOST_PASSWORD=your_app_password
 ```
-
-📚 **For detailed environment setup, see [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md)**
 
 ### 5. Database Setup
 
