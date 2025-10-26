@@ -76,7 +76,7 @@ A comprehensive Django-based web application that leverages artificial intellige
    **Manual Setup**
    Create a `.env` file in the project root:
    ```bash
-   cp env.example .env
+   New-Item -Path .env -ItemType File #PowerShell (Windows)
    ```
    
    Then edit `.env` with your API keys:
