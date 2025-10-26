@@ -73,12 +73,7 @@ A comprehensive Django-based web application that leverages artificial intellige
 
 4. **Environment Configuration**
    
-   **Option A: Quick Setup (Recommended)**
-   ```bash
-   python setup_env.py
-   ```
-   
-   **Option B: Manual Setup**
+   **Manual Setup**
    Create a `.env` file in the project root:
    ```bash
    cp env.example .env
@@ -104,8 +99,6 @@ A comprehensive Django-based web application that leverages artificial intellige
    SECRET_KEY=your_secret_key_here
    DEBUG=True
    ```
-   
-   📚 **For detailed setup instructions, see [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md)**
 
 5. **Database Setup**
    ```bash
@@ -298,17 +291,6 @@ COPY . .
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 ```
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
