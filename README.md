@@ -51,7 +51,7 @@ A comprehensive Django-based web application that leverages artificial intellige
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/ai-personal-stylist.git
+   git clone https://github.com/Bluebubbleeee/ai-personal-stylist.git
    cd ai-personal-stylist
    ```
 
